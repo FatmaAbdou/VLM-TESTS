@@ -1,0 +1,76 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "som_bench_refcocog_refseg",
+  "dataset_size": 12966845,
+  "description": "",
+  "download_size": 12935674,
+  "features": {
+    "id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "image": {
+      "_type": "Image"
+    },
+    "obj_text": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "ref_ids": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "json_data": {
+      "feature": {
+        "ref_id": {
+          "dtype": "int64",
+          "_type": "Value"
+        },
+        "text": {
+          "feature": {
+            "dtype": "string",
+            "_type": "Value"
+          },
+          "_type": "List"
+        }
+      },
+      "_type": "List"
+    },
+    "depth_caption": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "pred_res": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "List"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 25902519,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 12966845,
+      "num_examples": 100,
+      "dataset_name": "som_bench_refcocog_refseg"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
+
+# Generated evaluation outputs
+results/
+
+# Large NaviTrace metadata file
+navitrace_validation_metadata.json

@@ -1,0 +1,9 @@
+torch
+torchvision
+transformers>=4.45.0
+accelerate
+bitsandbytes
+datasets
+Pillow>=10.0.0
+sentencepiece
+protobuf
