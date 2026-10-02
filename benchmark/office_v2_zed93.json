@@ -156,7 +156,8 @@
         "yes",
         "yes, a low table is visible",
         "yes, the low table is visible",
-        "yes, there is a low table visible"
+        "yes, there is a low table visible",
+        "Yes, there is a low table in the image."
       ],
       "answer_type": "yes_no",
       "notes": "Tests whether the model recognizes the low table as an object."
@@ -174,7 +175,8 @@
         "yes, two couches are visible",
         "yes, two couches are visible in the seating area",
         "yes, the two couches are visible",
-        "yes, there are two couches visible"
+        "yes, there are two couches visible",
+        "Yes, there are two couches visible in the seating area."
       ],
       "answer_type": "yes_no",
       "notes": "Tests whether the model recognizes both couches, including the partially side-view couch."
@@ -273,7 +275,8 @@
         "yes",
         "yes, elevators are visible",
         "yes, elevators are visible ahead",
-        "yes, the elevators are visible ahead"
+        "yes, the elevators are visible ahead",
+        "Yes, elevators are visible ahead in the image."
       ],
       "answer_type": "yes_no",
       "notes": "The viewpoint has moved forward past the stairwell and is close to the elevators."
@@ -445,7 +448,8 @@
         "yes",
         "yes, a low table is visible",
         "yes, a low table is visible between the two couches",
-        "yes, the low table is visible between the two couches"
+        "yes, the low table is visible between the two couches",
+        "Yes, there is a low table visible between the two couches."
       ],
       "answer_type": "yes_no",
       "notes": "A low table is positioned between the two couches."
@@ -463,7 +467,8 @@
         "no, an elevator is not visible",
         "no, the elevator is not visible",
         "no, there is no elevator visible",
-        "no, an elevator is not visible in this close view"
+        "no, an elevator is not visible in this close view",
+        "No, an elevator is not visible in this close view of the doorway."
       ],
       "answer_type": "yes_no",
       "notes": "The close doorway view does not show an elevator."
@@ -522,7 +527,8 @@
         "yes, green plants are partly hidden",
         "yes, some green plants are partly hidden behind the couches",
         "yes, some plants are partly hidden behind the couches",
-        "yes, the green plants are partly hidden behind the couches"
+        "yes, the green plants are partly hidden behind the couches",
+        "Yes, there are green leaves in the frame."
       ],
       "answer_type": "yes_no",
       "notes": "Some plants are partially obscured by the couches."
@@ -540,7 +546,8 @@
         "yes, gold stanchions with red rope are visible",
         "yes, gold stanchions are visible",
         "yes, the gold stanchions with red rope are visible",
-        "yes, there are gold stanchions with red rope near the reception area"
+        "yes, there are gold stanchions with red rope near the reception area",
+        "Yes, gold stanchions with red rope are visible near the reception area."
       ],
       "answer_type": "yes_no",
       "notes": "Gold stanchions connected by red rope are visible near the reception area."
@@ -569,7 +576,7 @@
       "input_media": [
         "frame_040"
       ],
-      "question": "Are there waste bins underneath the office desks?",
+      "question": "Are there trash bins underneath the office desks?",
       "ground_truth": "Yes",
       "accepted_answers": [
         "yes",
@@ -656,7 +663,8 @@
         "yes",
         "yes, there is a seating area",
         "yes, a seating area is visible",
-        "yes, the scene contains a seating area"
+        "yes, the scene contains a seating area",
+        " Yes, there is a seating area in the scene."
       ],
       "answer_type": "yes_no",
       "notes": "Scene-level wording diagnostic. The frame shows two couches arranged around a low table. This tests whether the model can interpret the group as a seating area rather than only recognize individual objects.",
@@ -766,7 +774,8 @@
         "no, the plants are partly blocked",
         "no, some parts of the plants are blocked",
         "no, the green plants are partially obscured",
-        "no, some of the plants are partly hidden"
+        "no, some of the plants are partly hidden",
+        "No, the green plants are partially blocked by the couches."
       ],
       "answer_type": "yes_no",
       "notes": "Complementary occlusion test. The target state is partial visibility rather than complete visibility.",
@@ -806,7 +815,8 @@
         "standalone stanchion",
         "the stanchion with no rope attached",
         "the stanchion without the rope",
-        "the standalone one"
+        "the standalone one",
+        "The standalone stanchion is nearest to the robot."
       ],
       "answer_type": "categorical",
       "notes": "Instance-selection diagnostic. Multiple visually similar stanchions are present. The intended target is the standalone stanchion nearest to the robot, not the roped stanchions farther away.",
@@ -922,7 +932,8 @@
         "waste bins",
         "bins",
         "mesh bin",
-        "wire bin"
+        "wire bin",
+        "Trash bins"
       ],
       "answer_type": "categorical",
       "notes": "Terminology diagnostic for OFFICE-026. The objects appear as mesh/wire-style waste bins rather than solid metal cans. This test is intended to determine whether terminology affects recognition; the canonical label should remain grounded in the visual appearance.",
@@ -937,7 +948,7 @@
       "input_media": [
         "frame_040"
       ],
-      "question": "Are mesh or wire waste bins visible underneath the office desks?",
+      "question": "Are trash bins visible underneath the office desks?",
       "ground_truth": "Yes",
       "accepted_answers": [
         "yes",
