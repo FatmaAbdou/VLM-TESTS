@@ -76,13 +76,12 @@ def calculate_accuracy(results):
     if not scored:
         return None
 
-    correct = sum(
-        1
+    total_score = sum(
+        r["correct"]
         for r in scored
-        if r["correct"] is True
     )
 
-    return correct / len(scored)
+    return total_score / len(scored)
 
 
 def calculate_capability_accuracy(results):
@@ -104,17 +103,16 @@ def calculate_capability_accuracy(results):
     output = {}
 
     for capability, items in grouped.items():
-        correct = sum(
-            1
+        total_score = sum(
+            item["correct"]
             for item in items
-            if item["correct"] is True
         )
 
         output[capability] = {
-            "correct": correct,
+            "correct": total_score,
             "total": len(items),
             "accuracy": (
-                correct / len(items)
+                total_score / len(items)
             ),
         }
 

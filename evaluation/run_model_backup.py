@@ -1,19 +1,15 @@
 import argparse
-import csv
 import json
 import time
 from pathlib import Path
 
 import torch
 from PIL import Image
-
 from transformers import (
+    AutoModelForImageTextToText,
     AutoProcessor,
-    Qwen2_5_VLForConditionalGeneration,
     BitsAndBytesConfig,
 )
-
-from qwen_vl_utils import process_vision_info
 
 from metrics import (
     calculate_accuracy,
@@ -27,41 +23,27 @@ from scoring import score_test
 ROOT = Path(__file__).resolve().parents[1]
 
 BENCHMARK_FILE = (
-    ROOT
-    / "benchmark"
-    / "office_v2_zed93.json"
+    ROOT / "benchmark" / "office_v2_frozen.json"
 )
 
-MANIFEST_FILE = (
-    ROOT
-    / "benchmark"
-    / "office_manifest.csv"
-)
-
-RESULTS_DIR = (
-    ROOT
-    / "results"
-)
-
-
-# --------------------------------------------------
-# Model configuration
-# --------------------------------------------------
+RESULTS_DIR = ROOT / "results"
 
 MODELS = {
-    "qwen3b": {
-        "name": "Qwen/Qwen2.5-VL-3B-Instruct",
-        "results_dir": "qwen2.5-vl-3b-instruct",
+    "500m": {
+        "name": "HuggingFaceTB/SmolVLM-500M-Instruct",
+        "results_dir": "smolvlm-500m-instruct",
+        "quantized": False,
+    },
+    "2b": {
+        "name": "HuggingFaceTB/SmolVLM2-2.2B-Instruct",
+        "results_dir": "smolvlm2-2.2b-instruct",
         "quantized": True,
     },
 }
 
-
-# --------------------------------------------------
-# Generation configuration
-# --------------------------------------------------
-
 MAX_NEW_TOKENS = 64
+
+TEMPERATURE = 0.0
 
 SYSTEM_PROMPT = """You are being evaluated on visual understanding.
 
@@ -72,61 +54,51 @@ Answer briefly and directly.
 Do not invent information that cannot be observed."""
 
 
-# --------------------------------------------------
-# Load benchmark
-# --------------------------------------------------
-
 def load_benchmark():
-
     with open(
         BENCHMARK_FILE,
         "r",
         encoding="utf-8",
     ) as f:
-
         data = json.load(f)
 
     return data.get("tests", [])
 
 
-# --------------------------------------------------
-# Load frame path from manifest
-# --------------------------------------------------
-
 def get_image_path(frame_id):
+    manifest_path = (
+        ROOT
+        / "benchmark"
+        / "office_manifest.csv"
+    )
 
     with open(
-        MANIFEST_FILE,
+        manifest_path,
         "r",
         encoding="utf-8",
-        newline="",
     ) as f:
+        lines = f.read().splitlines()
 
-        reader = csv.DictReader(f)
+    for line in lines[1:]:
+        parts = line.split(",", 2)
 
-        for row in reader:
+        if (
+            len(parts) >= 2
+            and parts[0] == frame_id
+        ):
+            filename = (
+                parts[1]
+                .strip()
+                .strip('"')
+            )
 
-            if row.get("frame_id") == frame_id:
-
-                filename = (
-                    row.get("filename")
-                    or ""
-                ).strip()
-
-                if (
-                    filename.startswith('"')
-                    and filename.endswith('"')
-                ):
-                    filename = filename[1:-1]
-
-                return (
-                    ROOT
-                    / "benchmark"
-                    / "assets"
-                    / "office"
-                    / "Images"
-                    / filename
-                )
+            return (
+                ROOT
+                / "benchmark"
+                / "assets"
+                / "office"
+                / filename
+            )
 
     raise FileNotFoundError(
         f"Frame {frame_id} not found "
@@ -134,49 +106,27 @@ def get_image_path(frame_id):
     )
 
 
-# --------------------------------------------------
-# Load images for a test
-# --------------------------------------------------
-
 def load_images(case):
-
     images = []
 
     for frame_id in case["input_media"]:
-
-        image_path = get_image_path(
-            frame_id
-        )
+        image_path = get_image_path(frame_id)
 
         if not image_path.exists():
-
             raise FileNotFoundError(
-                f"Image not found: "
-                f"{image_path}"
+                f"Image not found: {image_path}"
             )
 
-        # Open once here only to verify the image
-        # is readable. Qwen itself receives the
-        # original file path below.
-        with Image.open(image_path) as image:
-            image.verify()
-
         images.append(
-            {
-                "frame_id": frame_id,
-                "path": image_path,
-            }
+            Image.open(
+                image_path
+            ).convert("RGB")
         )
 
     return images
 
 
-# --------------------------------------------------
-# Build benchmark prompt
-# --------------------------------------------------
-
 def build_prompt(case):
-
     return (
         f"{SYSTEM_PROMPT}\n\n"
         f"Question:\n"
@@ -185,14 +135,8 @@ def build_prompt(case):
     )
 
 
-# --------------------------------------------------
-# GPU statistics
-# --------------------------------------------------
-
 def get_gpu_stats():
-
     if not torch.cuda.is_available():
-
         return {
             "gpu_vram_mb": None,
             "gpu_utilization_percent": None,
@@ -201,15 +145,11 @@ def get_gpu_stats():
     device = torch.cuda.current_device()
 
     allocated = (
-        torch.cuda.memory_allocated(
-            device
-        )
+        torch.cuda.memory_allocated(device)
     )
 
     reserved = (
-        torch.cuda.memory_reserved(
-            device
-        )
+        torch.cuda.memory_reserved(device)
     )
 
     return {
@@ -217,52 +157,32 @@ def get_gpu_stats():
             allocated,
             reserved,
         ) / (1024 * 1024),
-
         "gpu_utilization_percent": None,
     }
 
 
-# --------------------------------------------------
-# Load Qwen model
-# --------------------------------------------------
-
 def load_model(model_config):
-
     model_name = model_config["name"]
 
-    print()
     print("Loading model...")
-    print(
-        f"Model: {model_name}"
-    )
+    print(f"Model: {model_name}")
 
-    print(
-        "Loading processor..."
-    )
-
-    processor = (
-        AutoProcessor.from_pretrained(
-            model_name
-        )
+    processor = AutoProcessor.from_pretrained(
+        model_name
     )
 
     if model_config["quantized"]:
-
-        print(
-            "Quantization: 4-bit"
-        )
+        print("Quantization: 4-bit")
 
         quantization_config = (
             BitsAndBytesConfig(
                 load_in_4bit=True,
-                bnb_4bit_compute_dtype=(
-                    torch.float16
-                ),
+                bnb_4bit_compute_dtype=torch.float16,
             )
         )
 
         model = (
-            Qwen2_5_VLForConditionalGeneration
+            AutoModelForImageTextToText
             .from_pretrained(
                 model_name,
                 quantization_config=(
@@ -273,62 +193,37 @@ def load_model(model_config):
         )
 
     else:
-
-        print(
-            "Quantization: None"
-        )
+        print("Quantization: None")
 
         model = (
-            Qwen2_5_VLForConditionalGeneration
+            AutoModelForImageTextToText
             .from_pretrained(
                 model_name,
-                torch_dtype=torch.float16,
+                dtype=torch.float16,
                 device_map="auto",
             )
         )
 
     model.eval()
 
-    print(
-        "Model loaded."
-    )
-
     return processor, model
 
-
-# --------------------------------------------------
-# Prepare Qwen inputs
-# --------------------------------------------------
 
 def prepare_inputs(
     processor,
     model,
     case,
 ):
+    images = load_images(case)
 
-    image_records = load_images(
-        case
-    )
+    prompt = build_prompt(case)
 
-    prompt = build_prompt(
-        case
-    )
-
-    content = []
-
-    # IMPORTANT:
-    # Keep the original working Qwen behavior:
-    # pass image FILE PATHS, not PIL images.
-    for record in image_records:
-
-        content.append(
-            {
-                "type": "image",
-                "image": str(
-                    record["path"]
-                ),
-            }
-        )
+    content = [
+        {
+            "type": "image",
+        }
+        for _ in images
+    ]
 
     content.append(
         {
@@ -344,25 +239,15 @@ def prepare_inputs(
         }
     ]
 
-    text = (
-        processor.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True,
-        )
-    )
-
-    image_inputs, video_inputs = (
-        process_vision_info(
-            messages
-        )
+    text = processor.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
     )
 
     inputs = processor(
-        text=[text],
-        images=image_inputs,
-        videos=video_inputs,
-        padding=True,
+        text=text,
+        images=images,
         return_tensors="pt",
     )
 
@@ -376,61 +261,39 @@ def prepare_inputs(
     return inputs
 
 
-# --------------------------------------------------
-# Generate answer
-# --------------------------------------------------
-
 def generate_answer(
     processor,
     model,
     inputs,
 ):
-
     with torch.inference_mode():
-
-        generated_ids = (
-            model.generate(
-                **inputs,
-                max_new_tokens=(
-                    MAX_NEW_TOKENS
-                ),
-                do_sample=False,
-            )
+        generated_ids = model.generate(
+            **inputs,
+            max_new_tokens=MAX_NEW_TOKENS,
+            do_sample=False,
         )
 
-    generated_ids_trimmed = [
-        output_ids[
-            len(input_ids):
-        ]
-        for input_ids, output_ids
-        in zip(
-            inputs["input_ids"],
-            generated_ids,
-        )
-    ]
-
-    answer = (
-        processor.batch_decode(
-            generated_ids_trimmed,
-            skip_special_tokens=True,
-            clean_up_tokenization_spaces=False,
-        )[0]
-        .strip()
+    input_length = (
+        inputs["input_ids"].shape[1]
     )
+
+    generated_ids = (
+        generated_ids[:, input_length:]
+    )
+
+    answer = processor.batch_decode(
+        generated_ids,
+        skip_special_tokens=True,
+    )[0].strip()
 
     return answer
 
-
-# --------------------------------------------------
-# Run one inference
-# --------------------------------------------------
 
 def run_inference(
     processor,
     model,
     case,
 ):
-
     inputs = prepare_inputs(
         processor,
         model,
@@ -452,27 +315,18 @@ def run_inference(
         torch.cuda.synchronize()
 
     latency = (
-        time.perf_counter()
-        - start
+        time.perf_counter() - start
     )
 
     return answer, latency
 
-
-# --------------------------------------------------
-# Warm-up
-# --------------------------------------------------
 
 def warmup_model(
     processor,
     model,
     case,
 ):
-
-    print()
-    print(
-        "Running GPU warm-up..."
-    )
+    print("\nRunning GPU warm-up...")
 
     inputs = prepare_inputs(
         processor,
@@ -495,8 +349,7 @@ def warmup_model(
         torch.cuda.synchronize()
 
     warmup_latency = (
-        time.perf_counter()
-        - start
+        time.perf_counter() - start
     )
 
     print(
@@ -504,40 +357,29 @@ def warmup_model(
         f"{warmup_latency:.3f}s"
     )
 
-    print(
-        "Warm-up complete."
-    )
+    print("Warm-up complete.")
 
-
-# --------------------------------------------------
-# Score one case
-# --------------------------------------------------
 
 def score_case(
     case,
     model_answer,
 ):
-
     scoring_case = {
         "expected_answer": case[
             "ground_truth"
         ],
-
         "accepted_answers": case.get(
             "accepted_answers",
             [],
         ),
-
         "partial_answers": case.get(
             "partial_answers",
             [],
         ),
-
         "scoring_mode": case.get(
             "scoring_mode",
             "exact_or_semantic",
         ),
-
         "answer_type": case[
             "answer_type"
         ],
@@ -550,23 +392,14 @@ def score_case(
 
     return correct
 
-
-# --------------------------------------------------
-# Evaluate one case
-# --------------------------------------------------
-
 def evaluate_case(
     processor,
     model,
     case,
 ):
-
-    gpu_before = (
-        get_gpu_stats()
-    )
+    gpu_before = get_gpu_stats()
 
     try:
-
         model_answer, latency = (
             run_inference(
                 processor,
@@ -580,56 +413,34 @@ def evaluate_case(
             model_answer,
         )
 
-        gpu_after = (
-            get_gpu_stats()
-        )
+        gpu_after = get_gpu_stats()
 
         return {
             "test_id": case[
                 "test_id"
             ],
-
             "category": case[
                 "category"
             ],
-
             "input_media": case[
                 "input_media"
             ],
-
             "question": case[
                 "question"
             ],
-
             "ground_truth": case[
                 "ground_truth"
             ],
-
             "accepted_answers": case.get(
                 "accepted_answers",
                 [],
             ),
-
-            "partial_answers": case.get(
-                "partial_answers",
-                [],
-            ),
-
             "answer_type": case[
                 "answer_type"
             ],
-
-            "scoring_mode": case.get(
-                "scoring_mode",
-                "exact_or_semantic",
-            ),
-
             "model_answer": model_answer,
-
             "correct": correct,
-
             "latency_seconds": latency,
-
             "gpu_vram_mb": (
                 gpu_after.get(
                     "gpu_vram_mb"
@@ -638,81 +449,50 @@ def evaluate_case(
                     "gpu_vram_mb"
                 )
             ),
-
             "gpu_utilization_percent": None,
         }
 
     except Exception as e:
-
         return {
             "test_id": case[
                 "test_id"
             ],
-
             "category": case[
                 "category"
             ],
-
             "input_media": case[
                 "input_media"
             ],
-
             "question": case[
                 "question"
             ],
-
             "ground_truth": case[
                 "ground_truth"
             ],
-
             "accepted_answers": case.get(
                 "accepted_answers",
                 [],
             ),
-
-            "partial_answers": case.get(
-                "partial_answers",
-                [],
-            ),
-
             "answer_type": case[
                 "answer_type"
             ],
-
-            "scoring_mode": case.get(
-                "scoring_mode",
-                "exact_or_semantic",
-            ),
-
             "model_answer": None,
-
             "correct": None,
-
             "latency_seconds": None,
-
             "gpu_vram_mb": None,
-
             "gpu_utilization_percent": None,
-
             "error": str(e),
         }
 
 
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
-
 def main():
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         "--model",
         type=str,
-        choices=[
-            "qwen3b",
-        ],
-        default="qwen3b",
+        choices=["500m", "2b"],
+        default="500m",
         help="Model to evaluate",
     )
 
@@ -735,41 +515,23 @@ def main():
         type=str,
         nargs="+",
         default=None,
-        help=(
-            "Run one or more "
-            "specific test IDs"
-        ),
+        help="Run one or more specific test IDs",
     )
 
     args = parser.parse_args()
 
-    model_config = MODELS[
-        args.model
-    ]
+    model_config = MODELS[args.model]
 
-    model_name = (
-        model_config["name"]
-    )
+    model_name = model_config["name"]
 
     model_results_dir = (
         RESULTS_DIR
-        / model_config[
-            "results_dir"
-        ]
+        / model_config["results_dir"]
     )
-
-    # --------------------------------------------------
-    # Load benchmark
-    # --------------------------------------------------
 
     tests = load_benchmark()
 
-    # --------------------------------------------------
-    # Filter by test ID
-    # --------------------------------------------------
-
     if args.test_id is not None:
-
         requested_ids = set(
             args.test_id
         )
@@ -780,18 +542,14 @@ def main():
         }
 
         missing_ids = (
-            requested_ids
-            - all_test_ids
+            requested_ids - all_test_ids
         )
 
         if missing_ids:
-
             raise ValueError(
                 "Test ID(s) not found: "
                 + ", ".join(
-                    sorted(
-                        missing_ids
-                    )
+                    sorted(missing_ids)
                 )
             )
 
@@ -802,72 +560,36 @@ def main():
             in requested_ids
         ]
 
-    # --------------------------------------------------
-    # Limit tests
-    # --------------------------------------------------
-
     if args.limit is not None:
+        tests = tests[:args.limit]
 
-        tests = tests[
-            : args.limit
-        ]
-
-    print()
     print(
         f"Loaded {len(tests)} "
         "benchmark cases."
     )
 
-    print(
-        f"Model: {model_name}"
-    )
-
-    # --------------------------------------------------
-    # Device information
-    # --------------------------------------------------
+    print(f"Model: {model_name}")
 
     if torch.cuda.is_available():
-
-        print(
-            "Device: CUDA"
-        )
+        print("Device: CUDA")
 
         print(
             f"GPU: "
             f"{torch.cuda.get_device_name(0)}"
         )
-
     else:
+        print("Device: CPU")
 
-        print(
-            "Device: CPU"
-        )
-
-    # --------------------------------------------------
-    # Load model
-    # --------------------------------------------------
-
-    processor, model = (
-        load_model(
-            model_config
-        )
+    processor, model = load_model(
+        model_config
     )
 
-    # --------------------------------------------------
-    # Warm-up
-    # --------------------------------------------------
-
     if tests:
-
         warmup_model(
             processor,
             model,
             tests[0],
         )
-
-    # --------------------------------------------------
-    # Run benchmark
-    # --------------------------------------------------
 
     results = []
 
@@ -875,16 +597,9 @@ def main():
         tests,
         start=1,
     ):
-
-        print()
         print(
-            f"[{index}/{len(tests)}] "
+            f"\n[{index}/{len(tests)}] "
             f"{case['test_id']}"
-        )
-
-        print(
-            f"  Category: "
-            f"{case['category']}"
         )
 
         result = evaluate_case(
@@ -893,26 +608,15 @@ def main():
             case,
         )
 
-        results.append(
-            result
-        )
-
-        # --------------------------------------------------
-        # Error
-        # --------------------------------------------------
+        results.append(result)
 
         if result.get("error"):
-
             print(
                 f"  ERROR: "
                 f"{result['error']}"
             )
 
             continue
-
-        # --------------------------------------------------
-        # Result
-        # --------------------------------------------------
 
         print(
             f"  Answer: "
@@ -929,57 +633,28 @@ def main():
             f"{result['correct']}"
         )
 
-        if (
-            result[
-                "latency_seconds"
-            ]
-            is not None
-        ):
-
-            print(
-                f"  Latency: "
-                f"{result['latency_seconds']:.3f}s"
-            )
-
-    # --------------------------------------------------
-    # Scored results
-    # --------------------------------------------------
+        print(
+            f"  Latency: "
+            f"{result['latency_seconds']:.3f}s"
+        )
 
     scored_results = [
-        result
-        for result in results
-        if result.get("correct")
-        is not None
+        r
+        for r in results
+        if r.get("correct") is not None
     ]
 
-    # --------------------------------------------------
-    # Accuracy
-    # --------------------------------------------------
-
-    accuracy = (
-        calculate_accuracy(
-            scored_results
-        )
+    accuracy = calculate_accuracy(
+        scored_results
     )
 
-    # --------------------------------------------------
-    # Latency
-    # --------------------------------------------------
-
-    latency = (
-        calculate_latency_metrics(
-            results
-        )
+    latency = calculate_latency_metrics(
+        results
     )
-
-    # --------------------------------------------------
-    # Capability accuracy
-    # --------------------------------------------------
 
     capability_results = []
 
     for result in scored_results:
-
         capability_results.append(
             {
                 **result,
@@ -995,72 +670,33 @@ def main():
         )
     )
 
-    # --------------------------------------------------
-    # VRAM
-    # --------------------------------------------------
-
     vram_values = [
-        result["gpu_vram_mb"]
-        for result in results
-        if result.get(
-            "gpu_vram_mb"
-        )
+        r["gpu_vram_mb"]
+        for r in results
+        if r.get("gpu_vram_mb")
         is not None
     ]
 
-    peak_gpu_vram = (
-        max(vram_values)
-        if vram_values
-        else None
-    )
-
-    # --------------------------------------------------
-    # Summary
-    # --------------------------------------------------
-
     summary = {
-        "cases": len(
-            results
-        ),
-
+        "cases": len(results),
         "scored_cases": len(
             scored_results
         ),
-
         "accuracy": accuracy,
-
         "latency": latency,
-
         "capability_accuracy": (
             capability_accuracy
         ),
-
         "peak_gpu_vram_mb": (
-            peak_gpu_vram
+            max(vram_values)
+            if vram_values
+            else None
         ),
     }
 
-    # --------------------------------------------------
-    # Print summary
-    # --------------------------------------------------
-
-    print()
-    print(
-        "=" * 50
-    )
-
-    print(
-        "EVALUATION SUMMARY"
-    )
-
-    print(
-        "=" * 50
-    )
-
-    print(
-        f"Model: "
-        f"{model_name}"
-    )
+    print("\n" + "=" * 50)
+    print("EVALUATION SUMMARY")
+    print("=" * 50)
 
     print(
         f"Cases: "
@@ -1102,22 +738,11 @@ def main():
         f"{summary['peak_gpu_vram_mb']} MB"
     )
 
-    print(
-        "=" * 50
-    )
-
-    # --------------------------------------------------
-    # Results path
-    # --------------------------------------------------
+    print("=" * 50)
 
     if args.results_file:
-
-        results_file = (
-            args.results_file
-        )
-
+        results_file = args.results_file
     else:
-
         results_file = (
             model_results_dir
             / "results.json"
@@ -1128,35 +753,21 @@ def main():
         exist_ok=True,
     )
 
-    # --------------------------------------------------
-    # Output
-    # --------------------------------------------------
-
     output = {
         "model": model_name,
-
         "model_variant": args.model,
-
-        "quantized": (
-            model_config[
-                "quantized"
-            ]
-        ),
-
+        "quantized": model_config[
+            "quantized"
+        ],
         "quantization": (
             "4-bit"
-            if model_config[
-                "quantized"
-            ]
+            if model_config["quantized"]
             else None
         ),
-
         "benchmark_file": str(
             BENCHMARK_FILE
         ),
-
         "summary": summary,
-
         "results": results,
     }
 
@@ -1165,16 +776,14 @@ def main():
         "w",
         encoding="utf-8",
     ) as f:
-
         json.dump(
             output,
             f,
             indent=2,
         )
 
-    print()
     print(
-        f"Results saved to: "
+        f"\nResults saved to: "
         f"{results_file}"
     )
 

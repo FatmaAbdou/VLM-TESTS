@@ -14,6 +14,12 @@ def normalize(text):
     )
 
     text = re.sub(
+        r"[.!?,;:]+$",
+        "",
+        text,
+    )
+
+    text = re.sub(
         r"\s+",
         " ",
         text,
@@ -35,30 +41,23 @@ def extract_number(text):
 
 
 def score_exact(expected, predicted):
-    return (
-        normalize(expected)
-        == normalize(predicted)
-    )
+    return 1.0 if normalize(expected) == normalize(predicted) else 0.0
 
 
 def score_numeric(expected, predicted):
-    expected_number = extract_number(
-        expected
-    )
+    expected_number = extract_number(expected)
+    predicted_number = extract_number(predicted)
 
-    predicted_number = extract_number(
-        predicted
-    )
+    if expected_number is None:
+        return 0.0
 
-    if (
-        expected_number is None
-        or predicted_number is None
-    ):
-        return False
+    if predicted_number is None:
+        return 0.0
 
     return (
-        expected_number
-        == predicted_number
+        1.0
+        if expected_number == predicted_number
+        else 0.0
     )
 
 
@@ -67,14 +66,42 @@ def score_choice(expected, predicted):
     predicted = normalize(predicted)
 
     if expected == predicted:
-        return True
+        return 1.0
 
-    # Handle model responses such as:
-    # "The answer is sphere."
     if expected and expected in predicted:
-        return True
+        return 1.0
 
-    return False
+    return 0.0
+
+
+def score_spatial_partial(test, predicted):
+    normalized_predicted = normalize(predicted)
+
+    accepted_answers = [
+        normalize(answer)
+        for answer in test.get(
+            "accepted_answers",
+            [],
+        )
+    ]
+
+    # Complete spatial answer.
+    if normalized_predicted in accepted_answers:
+        return 1.0
+
+    # Partial spatial relations.
+    partial_answers = [
+        normalize(answer)
+        for answer in test.get(
+            "partial_answers",
+            [],
+        )
+    ]
+
+    if normalized_predicted in partial_answers:
+        return 0.5
+
+    return 0.0
 
 
 def score_test(test, predicted):
@@ -87,8 +114,32 @@ def score_test(test, predicted):
         "expected_answer"
     )
 
+    accepted_answers = test.get(
+        "accepted_answers",
+        [],
+    )
+
     if mode == "manual":
         return None
+
+    if mode == "spatial_partial":
+        return score_spatial_partial(
+            test,
+            predicted,
+        )
+
+    normalized_predicted = normalize(
+        predicted
+    )
+
+    if accepted_answers:
+        normalized_accepted = [
+            normalize(answer)
+            for answer in accepted_answers
+        ]
+
+        if normalized_predicted in normalized_accepted:
+            return 1.0
 
     if mode == "choice":
         return score_choice(
