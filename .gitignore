@@ -10,4 +10,3 @@ __pycache__/
 results/
 
 # Large NaviTrace metadata file
-navitrace_validation_metadata.json
