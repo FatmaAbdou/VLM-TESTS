@@ -1,0 +1,51 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "model_variant": "qwen3b",
+  "quantized": true,
+  "quantization": "4-bit",
+  "benchmark_file": "C:\\VLM-local\\VLM-TESTS\\benchmark\\office_v2_zed93.json",
+  "summary": {
+    "cases": 1,
+    "scored_cases": 1,
+    "accuracy": 0.0,
+    "latency": {
+      "mean_seconds": 38.793330399999945,
+      "median_seconds": 38.793330399999945,
+      "p95_seconds": 38.793330399999945,
+      "maximum_seconds": 38.793330399999945
+    },
+    "capability_accuracy": {
+      "Object Recognition": {
+        "correct": 0.0,
+        "total": 1,
+        "accuracy": 0.0
+      }
+    },
+    "peak_gpu_vram_mb": 4798.0
+  },
+  "results": [
+    {
+      "test_id": "OFFICE-009",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_059"
+      ],
+      "question": "Is a staircase visible on the right side of the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a staircase is visible",
+        "yes, a staircase is visible on the right",
+        "yes, the staircase is visible on the right side"
+      ],
+      "partial_answers": [],
+      "answer_type": "yes_no",
+      "scoring_mode": "exact_or_semantic",
+      "model_answer": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "correct": 0.0,
+      "latency_seconds": 38.793330399999945,
+      "gpu_vram_mb": 4798.0,
+      "gpu_utilization_percent": null
+    }
+  ]
+}

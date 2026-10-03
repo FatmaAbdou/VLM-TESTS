@@ -1,0 +1,54 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "model_variant": "qwen3b-zed",
+  "quantized": true,
+  "quantization": "4-bit",
+  "benchmark_file": "C:\\VLM-local\\VLM-TESTS\\benchmark\\office_v2_zed93.json",
+  "image_directory": "C:\\VLM-local\\VLM-TESTS\\benchmark\\assets\\office\\Images",
+  "vision_min_pixels": 3136,
+  "vision_max_pixels": 602112,
+  "summary": {
+    "cases": 1,
+    "scored_cases": 1,
+    "accuracy": 0.0,
+    "latency": {
+      "mean_seconds": 4.174667600000248,
+      "median_seconds": 4.174667600000248,
+      "p95_seconds": 4.174667600000248,
+      "maximum_seconds": 4.174667600000248
+    },
+    "capability_accuracy": {
+      "Object Recognition": {
+        "correct": 0.0,
+        "total": 1,
+        "accuracy": 0.0
+      }
+    },
+    "peak_gpu_vram_mb": 2653.5
+  },
+  "results": [
+    {
+      "test_id": "OFFICE-047",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "Are trash bins visible underneath the office desks?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, mesh waste bins are visible",
+        "yes, wire waste bins are visible",
+        "yes, mesh bins are visible",
+        "yes, wire bins are visible",
+        "yes, waste bins are visible underneath the desks"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "No, trash bins are not visible underneath the office desks.",
+      "correct": 0.0,
+      "latency_seconds": 4.174667600000248,
+      "gpu_vram_mb": 2653.5,
+      "gpu_utilization_percent": null
+    }
+  ]
+}

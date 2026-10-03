@@ -6,7 +6,6 @@ __pycache__/
 .env
 .DS_Store
 
-# Generated evaluation outputs
-results/
+
 
 # Large NaviTrace metadata file

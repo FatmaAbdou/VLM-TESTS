@@ -1,0 +1,1202 @@
+{
+  "model": "HuggingFaceTB/SmolVLM-500M-Instruct",
+  "model_variant": "500m",
+  "quantized": false,
+  "quantization": null,
+  "benchmark_file": "C:\\VLM-local\\VLM-TESTS\\benchmark\\office_v2_zed93.json",
+  "summary": {
+    "cases": 49,
+    "scored_cases": 49,
+    "accuracy": 0.673469387755102,
+    "latency": {
+      "mean_seconds": 1.2339920387754801,
+      "median_seconds": 0.9697998999999982,
+      "p95_seconds": 3.4387088999998014,
+      "maximum_seconds": 3.533741399999599
+    },
+    "capability_accuracy": {
+      "Object Recognition": {
+        "correct": 14.0,
+        "total": 14,
+        "accuracy": 1.0
+      },
+      "Attribute Recognition": {
+        "correct": 5.0,
+        "total": 6,
+        "accuracy": 0.8333333333333334
+      },
+      "Spatial Reasoning": {
+        "correct": 1.0,
+        "total": 6,
+        "accuracy": 0.16666666666666666
+      },
+      "Instruction Following": {
+        "correct": 2.0,
+        "total": 2,
+        "accuracy": 1.0
+      },
+      "Visibility / Occlusion": {
+        "correct": 4.0,
+        "total": 7,
+        "accuracy": 0.5714285714285714
+      },
+      "Temporal Consistency": {
+        "correct": 2.0,
+        "total": 5,
+        "accuracy": 0.4
+      },
+      "Scene / Landmark": {
+        "correct": 3.0,
+        "total": 4,
+        "accuracy": 0.75
+      },
+      "Negative Recognition": {
+        "correct": 0.0,
+        "total": 1,
+        "accuracy": 0.0
+      },
+      "Grounding": {
+        "correct": 0.0,
+        "total": 2,
+        "accuracy": 0.0
+      },
+      "Counting": {
+        "correct": 2.0,
+        "total": 2,
+        "accuracy": 1.0
+      }
+    },
+    "peak_gpu_vram_mb": 3406.0
+  },
+  "results": [
+    {
+      "test_id": "OFFICE-001",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_030"
+      ],
+      "question": "Is a reception desk visible in the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a reception desk is visible",
+        "yes, the reception desk is visible",
+        "yes, there is a reception desk visible"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9783666000002995,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-002",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_035"
+      ],
+      "question": "Is a black screen visible on the wall?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a black screen is visible",
+        "yes, the black screen is visible",
+        "yes, there is a black screen visible on the wall"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9622543999994377,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-003",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "Are computer screens visible on the office desks?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, computer screens are visible",
+        "yes, computer screens are visible on the office desks",
+        "yes, computer monitors are visible on the office desks",
+        "yes, screens are visible on the office desks"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9489007000001948,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-004",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_030"
+      ],
+      "question": "What color is the potted plant visible near the reception area?",
+      "ground_truth": "Green",
+      "accepted_answers": [
+        "green",
+        "green foliage",
+        "the plant is green",
+        "the foliage is green"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Green.",
+      "correct": 1.0,
+      "latency_seconds": 0.9760194000000411,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-005",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "What color are the posts used with the red rope barrier?",
+      "ground_truth": "Gold",
+      "accepted_answers": [
+        "gold",
+        "golden",
+        "yellow",
+        "gold posts",
+        "golden posts",
+        "yellow posts",
+        "the posts are gold",
+        "the posts are golden",
+        "the posts are yellow"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Gold",
+      "correct": 1.0,
+      "latency_seconds": 0.8201796000003014,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-006",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "Relative to the robot vacuum, where is the standalone stanchion nearest to the robot?",
+      "ground_truth": "To the right and slightly ahead",
+      "accepted_answers": [
+        "to the right and slightly ahead",
+        "right and slightly ahead",
+        "slightly ahead and to the right",
+        "ahead and to the right",
+        "in front of and to the right",
+        "the stanchion is to the right and slightly ahead",
+        "the standalone stanchion is to the right and slightly ahead",
+        "the stanchion is slightly ahead and to the right",
+        "to the right"
+      ],
+      "answer_type": "spatial",
+      "model_answer": "Corner.",
+      "correct": 0.0,
+      "latency_seconds": 0.9622992999993585,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-007",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Where is the low table in relation to the two couches?",
+      "ground_truth": "Between the two couches",
+      "accepted_answers": [
+        "between the two couches",
+        "between the couches",
+        "the low table is between the two couches",
+        "the low table is between the couches",
+        "the table is between the two couches",
+        "the table is between the couches",
+        "the low table is located between the two couches",
+        "the low table is located between the couches"
+      ],
+      "answer_type": "spatial",
+      "model_answer": "Between two couches.",
+      "correct": 0.0,
+      "latency_seconds": 1.351448800000071,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-030",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Is a low table visible?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a low table is visible",
+        "yes, the low table is visible",
+        "yes, there is a low table visible",
+        "Yes, there is a low table in the image."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9381547000002683,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-031",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Are two couches visible in the seating area?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, two couches are visible",
+        "yes, two couches are visible in the seating area",
+        "yes, the two couches are visible",
+        "yes, there are two couches visible",
+        "Yes, there are two couches visible in the seating area."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9937080999998216,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-032",
+      "category": "Instruction Following",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "What object is located between the two couches?",
+      "ground_truth": "Low table",
+      "accepted_answers": [
+        "low table",
+        "a low table",
+        "coffee table",
+        "a coffee table",
+        "table",
+        "the low table",
+        "the coffee table",
+        "a black coffee table",
+        "the black coffee table"
+      ],
+      "answer_type": "free_text",
+      "model_answer": "Table.",
+      "correct": 1.0,
+      "latency_seconds": 0.9615866000003734,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-033",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "What object is to the right of the coffee table?",
+      "ground_truth": "Couch",
+      "accepted_answers": [
+        "couch",
+        "a couch",
+        "sofa",
+        "a sofa",
+        "black couch",
+        "a black couch",
+        "black sofa",
+        "a black sofa",
+        "the couch",
+        "the sofa",
+        "the black couch",
+        "the black sofa"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Robot.",
+      "correct": 0.0,
+      "latency_seconds": 0.9805688999995255,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-008",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Are any of the green plants partly hidden by the couches?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, some green plants are partly hidden",
+        "yes, some of the green plants are partly hidden by the couches",
+        "yes, green plants are partly hidden behind the couches",
+        "yes, some plants are partly hidden behind the couches"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9875021000007109,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-009",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_059"
+      ],
+      "question": "Is a staircase visible on the right side of the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a staircase is visible",
+        "yes, a staircase is visible on the right",
+        "yes, the staircase is visible on the right side"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9755835999994815,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-010",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_062"
+      ],
+      "question": "Are elevators visible ahead in the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, elevators are visible",
+        "yes, elevators are visible ahead",
+        "yes, the elevators are visible ahead",
+        "Yes, elevators are visible ahead in the image."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9569670999999289,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-011",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_065"
+      ],
+      "question": "Is a metal trash bin visible near the staircase?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a metal trash bin is visible",
+        "yes, the metal trash bin is visible near the staircase",
+        "yes, there is a metal trash bin near the staircase"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9697998999999982,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-012",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_082"
+      ],
+      "question": "What color are the doors visible around the doorway?",
+      "ground_truth": "Red",
+      "accepted_answers": [
+        "red",
+        "red doors",
+        "red door",
+        "the doors are red",
+        "the door is red"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Red",
+      "correct": 1.0,
+      "latency_seconds": 0.8379089000000022,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-013",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_079",
+        "frame_080",
+        "frame_082"
+      ],
+      "question": "As the viewpoint moves closer to the doorway, does the EXIT sign remain visible in all three images?",
+      "ground_truth": "No",
+      "accepted_answers": [
+        "no",
+        "no, the EXIT sign does not remain visible",
+        "no, the EXIT sign is not visible in all three images",
+        "no, it is not visible in all three images"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 0.0,
+      "latency_seconds": 3.52603900000031,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-014",
+      "category": "Temporal Consistency",
+      "input_media": [
+        "frame_079",
+        "frame_080",
+        "frame_082"
+      ],
+      "question": "What happens to the visible staircase as the viewpoint moves closer to the doorway?",
+      "ground_truth": "It goes out of view",
+      "accepted_answers": [
+        "it goes out of view",
+        "the staircase is no longer visible",
+        "it becomes no longer visible",
+        "the staircase disappears",
+        "the staircase goes out of view",
+        "the staircase is no longer in view",
+        "the staircase disappears from view"
+      ],
+      "answer_type": "free_text",
+      "model_answer": "Stairs.",
+      "correct": 0.0,
+      "latency_seconds": 3.533741399999599,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-015",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_079"
+      ],
+      "question": "Where is the staircase relative to the open doorway ahead?",
+      "ground_truth": "To the right",
+      "accepted_answers": [
+        "to the right",
+        "on the right",
+        "the staircase is to the right",
+        "the staircase is on the right",
+        "the staircase is to the right of the open doorway",
+        "the staircase is on the right of the open doorway",
+        "The staircase is to the right of the open doorway ahead"
+      ],
+      "answer_type": "spatial",
+      "model_answer": "Stairs",
+      "correct": 0.0,
+      "latency_seconds": 0.9461387999999715,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-016",
+      "category": "Scene / Landmark",
+      "input_media": [
+        "frame_082"
+      ],
+      "question": "What distinctive feature is visible around the doorway?",
+      "ground_truth": "Red doors",
+      "accepted_answers": [
+        "red doors",
+        "red door",
+        "red emergency doors",
+        "red emergency door",
+        "red door frame",
+        "red doorway",
+        "red door frame around the doorway",
+        "the red door frame",
+        "the doorway has a red door frame",
+        "a red door frame is visible",
+        "The distinctive feature visible around the doorway is the red door frame."
+      ],
+      "answer_type": "categorical",
+      "model_answer": "White brick wall.",
+      "correct": 0.0,
+      "latency_seconds": 1.1783299999997325,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-017",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_070"
+      ],
+      "question": "Is a reception desk visible on the left side of the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a reception desk is visible",
+        "yes, the reception desk is visible on the left",
+        "yes, a reception desk is visible on the left side"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9320501000001968,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-018",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_073"
+      ],
+      "question": "Are dark couches visible in the seating area?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, dark couches are visible",
+        "yes, dark couches are visible in the seating area",
+        "yes, the dark couches are visible",
+        "yes, there are dark couches in the seating area"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9231029000002309,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-019",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Is a low table visible between the two couches?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a low table is visible",
+        "yes, a low table is visible between the two couches",
+        "yes, the low table is visible between the two couches",
+        "Yes, there is a low table visible between the two couches."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.946363900000506,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-020",
+      "category": "Negative Recognition",
+      "input_media": [
+        "frame_082"
+      ],
+      "question": "Is an elevator visible in this close view of the doorway?",
+      "ground_truth": "No",
+      "accepted_answers": [
+        "no",
+        "no, an elevator is not visible",
+        "no, the elevator is not visible",
+        "no, there is no elevator visible",
+        "no, an elevator is not visible in this close view",
+        "No, an elevator is not visible in this close view of the doorway."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 0.0,
+      "latency_seconds": 0.93650499999967,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-021",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_070"
+      ],
+      "question": "Where is the reception desk relative to the robot vacuum?",
+      "ground_truth": "To the left",
+      "accepted_answers": [
+        "to the left",
+        "on the left",
+        "the reception desk is to the left of the robot vacuum",
+        "the reception desk is to the left",
+        "the reception desk is on the left of the robot vacuum"
+      ],
+      "answer_type": "spatial",
+      "model_answer": "Left.",
+      "correct": 0.0,
+      "latency_seconds": 0.9488323000005039,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-022",
+      "category": "Instruction Following",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Identify the object located between the two couches.",
+      "ground_truth": "Low table",
+      "accepted_answers": [
+        "low table",
+        "a low table",
+        "table",
+        "a black coffee table",
+        "coffee table",
+        "a coffee table",
+        "the low table",
+        "the table",
+        "the coffee table",
+        "the black coffee table"
+      ],
+      "answer_type": "free_text",
+      "model_answer": "Table.",
+      "correct": 1.0,
+      "latency_seconds": 0.9436370999992505,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-023",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Can you see any green leaves in the frame?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, green plants are partly hidden",
+        "yes, some green plants are partly hidden behind the couches",
+        "yes, some plants are partly hidden behind the couches",
+        "yes, the green plants are partly hidden behind the couches",
+        "Yes, there are green leaves in the frame."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.945580799999334,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-024",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "Are gold stanchions with red rope visible near the reception area?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, gold stanchions with red rope are visible",
+        "yes, gold stanchions are visible",
+        "yes, the gold stanchions with red rope are visible",
+        "yes, there are gold stanchions with red rope near the reception area",
+        "Yes, gold stanchions with red rope are visible near the reception area."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9309800999999425,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-025",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "Are computer monitors visible on the office desks?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, computer monitors are visible",
+        "yes, computer monitors are visible on the office desks",
+        "yes, computer screens are visible on the office desks",
+        "yes, screens are visible on the office desks"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9360280999999304,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-026",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "Are there trash bins underneath the office desks?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "waste bins",
+        "waste bin",
+        "bins",
+        "bin",
+        "waste baskets",
+        "waste basket",
+        "yes, there are waste bins underneath the desks",
+        "yes, waste bins are visible underneath the office desks"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.938199799999893,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-027",
+      "category": "Temporal Consistency",
+      "input_media": [
+        "frame_001",
+        "frame_003"
+      ],
+      "question": "Do both images show the same general lobby area?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, both images show the same general lobby area",
+        "yes, they show the same general lobby area",
+        "yes, both images show the same lobby area"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 1.9183657000003222,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-028",
+      "category": "Temporal Consistency",
+      "input_media": [
+        "frame_005",
+        "frame_006"
+      ],
+      "question": "Do the two images show the same viewpoint of the patterned-carpet corridor?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, the two images show the same viewpoint",
+        "yes, both images show the same viewpoint of the patterned-carpet corridor",
+        "yes, they show the same viewpoint of the patterned-carpet corridor"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 1.9168103000001793,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-029",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "What color is the standalone stanchion closest to the robot, with no rope attached?",
+      "ground_truth": "Gold",
+      "accepted_answers": [
+        "gold",
+        "golden",
+        "yellow",
+        "gold stanchion",
+        "golden stanchion",
+        "yellow stanchion",
+        "the stanchion is gold",
+        "the standalone stanchion is gold",
+        "the standalone stanchion is golden",
+        "the standalone stanchion is yellow"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Yellow",
+      "correct": 1.0,
+      "latency_seconds": 0.8444797000001927,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-034",
+      "category": "Scene / Landmark",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Is there a seating area in the scene?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, there is a seating area",
+        "yes, a seating area is visible",
+        "yes, the scene contains a seating area",
+        " Yes, there is a seating area in the scene."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9829190000000381,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-035",
+      "category": "Scene / Landmark",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Are the couches arranged as a seating area?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, the couches are arranged as a seating area",
+        "yes, the couches form a seating area",
+        "yes, they form a seating area"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9661759000000529,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-036",
+      "category": "Scene / Landmark",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Is there an area where people could sit?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, there is an area where people could sit",
+        "yes, people could sit there",
+        "yes, there is a place to sit"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9780966999996963,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-037",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Are the green plants partially obscured by the couches?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, the green plants are partially obscured",
+        "yes, some green plants are partially obscured by the couches",
+        "yes, the plants are partly blocked by the couches",
+        "yes, some plants are partly blocked by the couches"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "No.",
+      "correct": 0.0,
+      "latency_seconds": 0.9408690000000206,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-038",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Can you see green leaves from behind the couches?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, green leaves are visible",
+        "yes, some green leaves are visible",
+        "yes, green leaves can be seen behind the couches"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 1.003656700000647,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-039",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Are the green plants fully visible without any part blocked by the couches?",
+      "ground_truth": "No",
+      "accepted_answers": [
+        "no",
+        "no, the plants are partly blocked",
+        "no, some parts of the plants are blocked",
+        "no, the green plants are partially obscured",
+        "no, some of the plants are partly hidden",
+        "No, the green plants are partially blocked by the couches."
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 0.0,
+      "latency_seconds": 0.9895053000000189,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-040",
+      "category": "Visibility / Occlusion",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "Is the low table fully visible in the space between the couches?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, the low table is fully visible",
+        "yes, the table is fully visible",
+        "yes, the low table is visible between the couches"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9704782999997406,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-041",
+      "category": "Grounding",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "Which stanchion is nearest to the robot: the standalone stanchion or one connected by the red rope?",
+      "ground_truth": "The standalone stanchion",
+      "accepted_answers": [
+        "the standalone stanchion",
+        "standalone stanchion",
+        "the stanchion with no rope attached",
+        "the stanchion without the rope",
+        "the standalone one",
+        "The standalone stanchion is nearest to the robot."
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Red rope connected to the standalone stanchion.",
+      "correct": 0.0,
+      "latency_seconds": 2.0255606999999145,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-042",
+      "category": "Grounding",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "Is the stanchion nearest to the robot connected to the red rope?",
+      "ground_truth": "No",
+      "accepted_answers": [
+        "no",
+        "no, it is not connected to the red rope",
+        "no, the nearest stanchion is standalone",
+        "no, the nearest stanchion has no rope attached"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 0.0,
+      "latency_seconds": 1.0651150999992751,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-043",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_093"
+      ],
+      "question": "Relative to the robot vacuum, is the nearest standalone stanchion to the right?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, it is to the right",
+        "yes, the standalone stanchion is to the right",
+        "yes, the nearest standalone stanchion is to the right"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9760083000001032,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-044",
+      "category": "Temporal Consistency",
+      "input_media": [
+        "frame_079",
+        "frame_080",
+        "frame_082"
+      ],
+      "question": "Is the staircase visible in the first two images but not the third?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, the staircase is visible in the first two images but not the third",
+        "yes, it is visible in frame_079 and frame_080 but not frame_082"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "No.",
+      "correct": 0.0,
+      "latency_seconds": 3.4142955000006623,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-045",
+      "category": "Temporal Consistency",
+      "input_media": [
+        "frame_079",
+        "frame_080",
+        "frame_082"
+      ],
+      "question": "Does the EXIT sign remain visible throughout all three frames?",
+      "ground_truth": "No",
+      "accepted_answers": [
+        "no",
+        "no, the EXIT sign is not visible throughout all three frames",
+        "no, it disappears from view in the third frame",
+        "no, it is not visible in the third frame"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 0.0,
+      "latency_seconds": 3.4549844999992274,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-046",
+      "category": "Attribute Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "What type of bins are visible underneath the office desks?",
+      "ground_truth": "Mesh or wire waste bins",
+      "accepted_answers": [
+        "mesh bins",
+        "wire bins",
+        "mesh waste bins",
+        "wire waste bins",
+        "mesh baskets",
+        "wire baskets",
+        "waste baskets",
+        "waste bins",
+        "bins",
+        "mesh bin",
+        "wire bin",
+        "Trash bins"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Trash",
+      "correct": 0.0,
+      "latency_seconds": 0.9939366999997219,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-047",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_040"
+      ],
+      "question": "Are trash bins visible underneath the office desks?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, mesh waste bins are visible",
+        "yes, wire waste bins are visible",
+        "yes, mesh bins are visible",
+        "yes, wire bins are visible",
+        "yes, waste bins are visible underneath the desks"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "Yes.",
+      "correct": 1.0,
+      "latency_seconds": 0.9806576999999379,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-048",
+      "category": "Counting",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "How many couches are visible in the seating area?",
+      "ground_truth": 2,
+      "accepted_answers": [
+        "2",
+        "two",
+        "two couches",
+        "there are two couches"
+      ],
+      "answer_type": "count",
+      "model_answer": "2",
+      "correct": 1.0,
+      "latency_seconds": 0.9300370999999359,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    },
+    {
+      "test_id": "OFFICE-049",
+      "category": "Counting",
+      "input_media": [
+        "frame_075"
+      ],
+      "question": "How many low tables are visible between the couches?",
+      "ground_truth": 1,
+      "accepted_answers": [
+        "1",
+        "one",
+        "one low table",
+        "one table",
+        "a single low table"
+      ],
+      "answer_type": "count",
+      "model_answer": "1",
+      "correct": 1.0,
+      "latency_seconds": 0.946879699999954,
+      "gpu_vram_mb": 3406.0,
+      "gpu_utilization_percent": null
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "model": "HuggingFaceTB/SmolVLM-500M-Instruct",
+  "benchmark_file": "C:\\VLM-local\\VLM-TESTS\\benchmark\\office_v2_frozen.json",
+  "summary": {
+    "cases": 1,
+    "scored_cases": 1,
+    "accuracy": 0.0,
+    "latency": {
+      "mean_seconds": 1.0567185999971116,
+      "median_seconds": 1.0567185999971116,
+      "p95_seconds": 1.0567185999971116,
+      "maximum_seconds": 1.0567185999971116
+    },
+    "capability_accuracy": {
+      "Spatial Reasoning": {
+        "correct": 0,
+        "total": 1,
+        "accuracy": 0.0
+      }
+    },
+    "peak_gpu_vram_mb": 1498.0
+  },
+  "results": [
+    {
+      "test_id": "OFFICE-033",
+      "category": "Spatial Reasoning",
+      "input_media": [
+        "frame_026"
+      ],
+      "question": "What object is to the right of the coffee table?",
+      "ground_truth": "Couch",
+      "accepted_answers": [
+        "couch",
+        "a couch",
+        "sofa",
+        "a sofa"
+      ],
+      "answer_type": "categorical",
+      "model_answer": "Robot.",
+      "correct": false,
+      "latency_seconds": 1.0567185999971116,
+      "gpu_vram_mb": 1498.0,
+      "gpu_utilization_percent": null
+    }
+  ]
+}

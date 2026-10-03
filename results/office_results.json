@@ -1,0 +1,13 @@
+[
+  {
+    "test_id": "OFFICE-029",
+    "category": "Attribute Recognition",
+    "question": "What color is the stanchion closest to the robot?",
+    "expected_answer": null,
+    "model_answer": "Red.",
+    "latency_seconds": 2.468919200000528,
+    "frame_ids": [
+      "frame_035"
+    ]
+  }
+]
