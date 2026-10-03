@@ -244,6 +244,7 @@ def get_peak_vram_mb():
 # Model generation
 # ============================================================
 
+
 def generate_answer(processor, model, inputs):
     with torch.inference_mode():
         generated_ids = model.generate(
@@ -260,11 +261,23 @@ def generate_answer(processor, model, inputs):
         )
     ]
 
+    token_ids = generated_ids_trimmed[0].tolist()
+
+    print("\n--- TOKEN DIAGNOSTICS ---")
+    print("Generated token IDs:", token_ids)
+    print(
+        "Generated tokens:",
+        processor.tokenizer.convert_ids_to_tokens(token_ids),
+    )
+
     answer = processor.batch_decode(
         generated_ids_trimmed,
         skip_special_tokens=True,
         clean_up_tokenization_spaces=False,
     )[0].strip()
+
+    print("Decoded answer:", repr(answer))
+    print("--- END DIAGNOSTICS ---\n")
 
     return answer
 
