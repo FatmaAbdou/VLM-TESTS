@@ -1,0 +1,34 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "quantization": "4-bit",
+  "image": "ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٤٠.png",
+  "question": "Describe what is visible in this office image. Identify the main objects, their approximate locations and spatial relationships, and any visible paths or obstacles. Only report details supported by the image.",
+  "model_answer": "The image depicts an empty office space with several notable features:\n\n1. **Floor**: The floor is white with brown square tiles arranged in a pattern.\n2. **Ceiling**: The ceiling is black with multiple rectangular light fixtures evenly spaced.\n3. **Walls**: The walls are white.\n4. **Desk**: There is a desk located towards the back of the room, containing several items including a computer monitor, keyboard, and a potted plant.\n5. **Cabinet**: To the right of the desk, there is a cabinet with a flat-screen TV mounted on it.\n6. **Robot Vacuum**: In the foreground, near the bottom center of the image, there is a robot vacuum cleaner.\n7. **Obstacles**: The robot vacuum cleaner appears to be on a path made of brown square tiles, which may be part of its navigation system.\n\nThe main objects in the image",
+  "latency_seconds": 45.618,
+  "peak_gpu_vram_mb": 2654.7,
+  "evaluation": {
+    "object_coverage": 1,
+    "attribute_correctness": 1,
+    "spatial_relationships": 1,
+    "hallucinations": 1,
+    "scoring_scale": {
+      "0": "Incorrect or absent",
+      "1": "Partially correct, incomplete, or uncertain",
+      "2": "Correct and sufficiently supported by the image"
+    },
+    "hallucination_score_direction": "Higher is better: fewer unsupported claims",
+    "evaluation_details": {
+      "object_coverage": "1/2 — Identifies the floor, ceiling, walls, background workstations, plant, display, cabinets, and foreground robot vacuum. Omits the prominent curved dark structure on the left and gives limited coverage of the large open floor area.",
+      "attribute_correctness": "1/2 — Most broad descriptions are correct. The floor has brown diamond-shaped inlays rather than simply square tiles, the ceiling is gray rather than black, and identifying the display specifically as a TV is not verifiable. The keyboard is too small to confirm confidently.",
+      "spatial_relationships": "1/2 — Correctly places the robot vacuum in the foreground and the workstations toward the back. The plant is near the right-side wall, and the display is above low cabinets. The answer does not fully describe the open floor area or the spatial arrangement of the room.",
+      "hallucinations": "1/2 — The claim that the brown floor markers may be part of the robot vacuum's navigation system is unsupported by the image. Calling the display a TV is also more specific than the visual evidence establishes.",
+      "additional_observations": "The image shows a spacious, apparently unoccupied office, a gray ceiling with rectangular lights, white walls and partitions, multiple background workstations and monitors, a large black display on the right, a potted plant, a curved dark structure on the left, brown floor inlays, and a round robotic device in the foreground.",
+      "answer_completeness": "The response ends mid-sentence at 'The main objects in the image', so the generated answer is incomplete.",
+      "scoring_limitation": "These are provisional manual scores based on visual inspection. Small details such as the keyboard cannot be confidently verified at this resolution."
+    },
+    "total_score": 4,
+    "maximum_score": 8,
+    "normalized_score_percent": 50,
+    "notes": "Provisional manual evaluation completed against the supplied full-resolution frame. Scores use a 0–2 scale; higher hallucination scores mean fewer unsupported claims. Open-ended answers should be evaluated by checking individual claims against the image rather than exact-match scoring."
+  }
+}

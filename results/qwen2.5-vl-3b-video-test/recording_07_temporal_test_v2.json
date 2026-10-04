@@ -1,0 +1,30 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "sampled_video_temporal_reasoning_v2",
+  "video": "C:\\VLM-local\\VLM-TESTS\\benchmark\\assets\\office\\Videos\\recording_07\\full.mp4",
+  "timestamps_seconds": [
+    48.0,
+    51.0,
+    56.0
+  ],
+  "frame_paths": [
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_48.0s.jpg",
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_51.0s.jpg",
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_56.0s.jpg"
+  ],
+  "results": {
+    "temporal_change": {
+      "question": "Compare these images in chronological order. How does the visibility of the staircase and EXIT sign change as the viewpoint moves toward the doorway? Describe only changes you can observe.",
+      "model_answer": "The visibility of the staircase decreases as the viewpoint moves toward the doorway, becoming partially obscured by the door frame. The EXIT sign becomes more prominent as the viewpoint approaches the doorway.",
+      "latency_seconds": 17.972,
+      "peak_gpu_memory_allocated_mb": 3505.4
+    },
+    "final_frame_state": {
+      "question": "Focus specifically on the final frame at 56.0 seconds. Are the staircase and EXIT sign still visible? Describe what is visible around the doorway. Do not infer objects that are outside the frame.",
+      "model_answer": "No, the staircase and EXIT sign are no longer visible in the final frame at 56.0 seconds. The door is open, revealing a white tiled wall with a red door frame.",
+      "latency_seconds": 18.318,
+      "peak_gpu_memory_allocated_mb": 3510.9
+    }
+  },
+  "note": "This tests reasoning across sampled images, not native video input. The final-frame question explicitly checks whether the staircase and EXIT sign remain visible."
+}

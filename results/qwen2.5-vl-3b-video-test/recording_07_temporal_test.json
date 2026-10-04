@@ -1,0 +1,20 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "sampled_video_frames_temporal_reasoning",
+  "video": "C:\\VLM-local\\VLM-TESTS\\benchmark\\assets\\office\\Videos\\recording_07\\full.mp4",
+  "timestamps_seconds": [
+    48.0,
+    51.0,
+    56.0
+  ],
+  "frame_paths": [
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_48.0s.jpg",
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_51.0s.jpg",
+    "C:\\VLM-local\\VLM-TESTS\\results\\qwen2.5-vl-3b-video-test\\sampled_frames\\frame_56.0s.jpg"
+  ],
+  "question": "Compare these images in chronological order. As the viewpoint moves toward the doorway, what happens to the staircase and the EXIT sign? Describe only changes you can observe.",
+  "model_answer": "The staircase becomes more prominent as the viewpoint moves toward the doorway. The EXIT sign remains visible but shifts slightly in position relative to the doorway.",
+  "latency_seconds": 15.712,
+  "peak_gpu_memory_allocated_mb": 3490.5,
+  "note": "This tests reasoning across sampled images, not native video input. Timestamps are shortlist candidates and have not yet been visually verified."
+}

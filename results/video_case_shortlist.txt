@@ -1,0 +1,328 @@
+VIDEO MATCH SHORTLIST
+Best available recording/time matches for benchmark test frames.
+MAE is a visual similarity score; lower is better.
+These are candidate matches, not confirmed mappings.
+
+OFFICE-001 | Object Recognition
+Question: Is a reception desk visible in the image?
+  frame_030 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٩-٤٨_٢٠٢٦-٠٩-٢١_١٥-٢٥-٤٤.png
+    recording_03 at 19.0s | MAE 27.826
+    recording_07 at 0.0s | MAE 41.326
+
+OFFICE-002 | Object Recognition
+Question: Is a black screen visible on the wall?
+  frame_035 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٤٣.png
+    recording_04 at 5.0s | MAE 7.121
+    recording_07 at 33.0s | MAE 32.961
+
+OFFICE-003 | Object Recognition
+Question: Are computer screens visible on the office desks?
+  frame_040 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٥٣.png
+    recording_04 at 12.0s | MAE 4.086
+    recording_08 at 12.0s | MAE 26.890
+
+OFFICE-004 | Attribute Recognition
+Question: What color is the potted plant visible near the reception area?
+  frame_030 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٩-٤٨_٢٠٢٦-٠٩-٢١_١٥-٢٥-٤٤.png
+    recording_03 at 19.0s | MAE 27.826
+    recording_07 at 0.0s | MAE 41.326
+
+OFFICE-005 | Attribute Recognition
+Question: What color are the posts used with the red rope barrier?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-006 | Spatial Reasoning
+Question: Relative to the robot vacuum, where is the standalone stanchion nearest to the robot?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-007 | Spatial Reasoning
+Question: Where is the low table in relation to the two couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-030 | Object Recognition
+Question: Is a low table visible?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-031 | Object Recognition
+Question: Are two couches visible in the seating area?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-032 | Instruction Following
+Question: What object is located between the two couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-033 | Spatial Reasoning
+Question: What object is to the right of the coffee table?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-008 | Visibility / Occlusion
+Question: Are any of the green plants partly hidden by the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-009 | Object Recognition
+Question: Is a staircase visible on the right side of the image?
+  frame_059 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢١-٤٦.png
+    recording_07 at 8.0s | MAE 16.767
+    recording_06 at 3.0s | MAE 31.872
+
+OFFICE-010 | Object Recognition
+Question: Are elevators visible ahead in the image?
+  frame_062 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢١-٥٠.png
+    recording_07 at 11.0s | MAE 22.215
+    recording_08 at 10.0s | MAE 60.316
+
+OFFICE-011 | Object Recognition
+Question: Is a metal trash bin visible near the staircase?
+  frame_065 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢١-٥٥.png
+    recording_07 at 15.0s | MAE 26.218
+    recording_08 at 8.0s | MAE 53.906
+
+OFFICE-012 | Attribute Recognition
+Question: What color are the doors visible around the doorway?
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-013 | Visibility / Occlusion
+Question: As the viewpoint moves closer to the doorway, does the EXIT sign remain visible in all three images?
+  frame_079 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٢٧.png
+    recording_07 at 48.0s | MAE 26.329
+    recording_03 at 20.0s | MAE 38.115
+  frame_080 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٠.png
+    recording_07 at 51.0s | MAE 16.040
+    recording_06 at 5.0s | MAE 38.516
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-014 | Temporal Consistency
+Question: What happens to the visible staircase as the viewpoint moves closer to the doorway?
+  frame_079 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٢٧.png
+    recording_07 at 48.0s | MAE 26.329
+    recording_03 at 20.0s | MAE 38.115
+  frame_080 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٠.png
+    recording_07 at 51.0s | MAE 16.040
+    recording_06 at 5.0s | MAE 38.516
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-015 | Spatial Reasoning
+Question: Where is the staircase relative to the open doorway ahead?
+  frame_079 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٢٧.png
+    recording_07 at 48.0s | MAE 26.329
+    recording_03 at 20.0s | MAE 38.115
+
+OFFICE-016 | Scene / Landmark
+Question: What distinctive feature is visible around the doorway?
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-017 | Object Recognition
+Question: Is a reception desk visible on the left side of the image?
+  frame_070 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٠٧.png
+    recording_07 at 28.0s | MAE 9.882
+    recording_04 at 29.0s | MAE 32.245
+
+OFFICE-018 | Object Recognition
+Question: Are dark couches visible in the seating area?
+  frame_073 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٤.png
+    recording_07 at 35.0s | MAE 16.023
+    recording_08 at 17.0s | MAE 37.285
+
+OFFICE-019 | Object Recognition
+Question: Is a low table visible between the two couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-020 | Negative Recognition
+Question: Is an elevator visible in this close view of the doorway?
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-021 | Spatial Reasoning
+Question: Where is the reception desk relative to the robot vacuum?
+  frame_070 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٠٧.png
+    recording_07 at 28.0s | MAE 9.882
+    recording_04 at 29.0s | MAE 32.245
+
+OFFICE-022 | Instruction Following
+Question: Identify the object located between the two couches.
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-023 | Visibility / Occlusion
+Question: Can you see any green leaves in the frame?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-024 | Object Recognition
+Question: Are gold stanchions with red rope visible near the reception area?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-025 | Object Recognition
+Question: Are computer monitors visible on the office desks?
+  frame_040 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٥٣.png
+    recording_04 at 12.0s | MAE 4.086
+    recording_08 at 12.0s | MAE 26.890
+
+OFFICE-026 | Attribute Recognition
+Question: Are there trash bins underneath the office desks?
+  frame_040 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٥٣.png
+    recording_04 at 12.0s | MAE 4.086
+    recording_08 at 12.0s | MAE 26.890
+
+OFFICE-027 | Temporal Consistency
+Question: Do both images show the same general lobby area?
+  frame_001 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٦-٤٧_٢٠٢٦-٠٩-٢١_١٥-٢٣-١٣.png
+    recording_01 at 2.0s | MAE 4.559
+    recording_08 at 13.0s | MAE 29.417
+  frame_003 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٦-٤٧_٢٠٢٦-٠٩-٢١_١٥-٢٣-١٦.png
+    recording_01 at 6.0s | MAE 3.619
+    recording_07 at 30.0s | MAE 37.597
+
+OFFICE-028 | Temporal Consistency
+Question: Do the two images show the same viewpoint of the patterned-carpet corridor?
+  frame_005 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٦-٤٧_٢٠٢٦-٠٩-٢١_١٥-٢٣-٢٢.png
+    recording_01 at 12.0s | MAE 41.198
+    recording_03 at 17.0s | MAE 52.030
+  frame_006 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٤-٥٦-٤٧_٢٠٢٦-٠٩-٢١_١٥-٢٣-٢٤.png
+    recording_01 at 14.0s | MAE 7.156
+    recording_03 at 6.0s | MAE 56.727
+
+OFFICE-029 | Attribute Recognition
+Question: What color is the standalone stanchion closest to the robot, with no rope attached?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-034 | Scene / Landmark
+Question: Is there a seating area in the scene?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-035 | Scene / Landmark
+Question: Are the couches arranged as a seating area?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-036 | Scene / Landmark
+Question: Is there an area where people could sit?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-037 | Visibility / Occlusion
+Question: Are the green plants partially obscured by the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-038 | Visibility / Occlusion
+Question: Can you see green leaves from behind the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-039 | Visibility / Occlusion
+Question: Are the green plants fully visible without any part blocked by the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-040 | Visibility / Occlusion
+Question: Is the low table fully visible in the space between the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-041 | Grounding
+Question: Which stanchion is nearest to the robot: the standalone stanchion or one connected by the red rope?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-042 | Grounding
+Question: Is the stanchion nearest to the robot connected to the red rope?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-043 | Spatial Reasoning
+Question: Relative to the robot vacuum, is the nearest standalone stanchion to the right?
+  frame_093 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-١٠-٣٥_٢٠٢٦-٠٩-٢١_١٥-٢١-١٩.png
+    recording_08 at 23.0s | MAE 19.344
+    recording_04 at 10.0s | MAE 32.756
+
+OFFICE-044 | Temporal Consistency
+Question: Is the staircase visible in the first two images but not the third?
+  frame_079 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٢٧.png
+    recording_07 at 48.0s | MAE 26.329
+    recording_03 at 20.0s | MAE 38.115
+  frame_080 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٠.png
+    recording_07 at 51.0s | MAE 16.040
+    recording_06 at 5.0s | MAE 38.516
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-045 | Temporal Consistency
+Question: Does the EXIT sign remain visible throughout all three frames?
+  frame_079 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٢٧.png
+    recording_07 at 48.0s | MAE 26.329
+    recording_03 at 20.0s | MAE 38.115
+  frame_080 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٠.png
+    recording_07 at 51.0s | MAE 16.040
+    recording_06 at 5.0s | MAE 38.516
+  frame_082 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-٣٥.png
+    recording_07 at 56.0s | MAE 14.254
+    recording_05 at 4.0s | MAE 59.843
+
+OFFICE-046 | Attribute Recognition
+Question: What type of bins are visible underneath the office desks?
+  frame_040 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٥٣.png
+    recording_04 at 12.0s | MAE 4.086
+    recording_08 at 12.0s | MAE 26.890
+
+OFFICE-047 | Object Recognition
+Question: Are trash bins visible underneath the office desks?
+  frame_040 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠١-١١_٢٠٢٦-٠٩-٢١_١٥-١٩-٥٣.png
+    recording_04 at 12.0s | MAE 4.086
+    recording_08 at 12.0s | MAE 26.890
+
+OFFICE-048 | Counting
+Question: How many couches are visible in the seating area?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
+
+OFFICE-049 | Counting
+Question: How many low tables are visible between the couches?
+  frame_075 -> ZED-X_SN45626933_٢٠٢٦-٠٩-٢١_١٥-٠٥-٥٧_٢٠٢٦-٠٩-٢١_١٥-٢٢-١٩.png
+    recording_07 at 40.0s | MAE 31.753
+    recording_04 at 15.0s | MAE 37.322
