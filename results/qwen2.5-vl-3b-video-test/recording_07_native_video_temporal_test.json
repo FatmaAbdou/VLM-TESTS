@@ -1,0 +1,12 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "native_video_temporal_reasoning",
+  "video": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Videos/recording_07/full.mp4",
+  "input_type": "native_video",
+  "video_extraction_for_model": false,
+  "question": "Watch the entire video and answer the following about the\nstaircase and EXIT sign near the end.\n\nUse only information visible in the video.\n\nAnswer in exactly this structure:\n\n1. APPROACH:\nDescribe what happens to the staircase and EXIT sign as\nthe camera approaches the doorway near the end.\n\n2. FINAL STATE:\nAt approximately 56 seconds, is the staircase visible?\nIs the EXIT sign visible?\n\n3. CHANGE:\nState whether each object goes from visible to not visible,\nremains visible, or is partly visible/cropped during the\napproach.\n\n4. EVIDENCE:\nBriefly describe what is actually visible around the doorway\nin the final part of the video.\n\nDo not assume an object is visible just because it was visible\nearlier in the video. Do not invent events between observations.",
+  "model_answer": "1. APPROACH:\nAs the camera approaches the doorway near the end, the staircase becomes partially visible on the right side, and the EXIT sign becomes more prominent on the left side.\n\n2. FINAL STATE:\nAt approximately 56 seconds, the staircase is no longer visible, and the EXIT sign is also no longer visible.\n\n3. CHANGE:\nThe staircase changes from partly visible to not visible, and the EXIT sign changes from partly visible to not visible.\n\n4. EVIDENCE:\nIn the final part of the video, the staircase is no longer visible, and the EXIT sign is also no longer visible. The scene shows a white wall with a red door and a blue carpeted staircase leading up to the second floor.",
+  "latency_seconds": 19.273,
+  "peak_gpu_memory_allocated_mb": 11379.0,
+  "note": "The MP4 was passed directly to Qwen2.5-VL through the native video input pathway. No OpenCV-extracted JPEG frames were supplied to the model. This test focuses on temporal reasoning about the staircase and EXIT sign near the end of the video."
+}

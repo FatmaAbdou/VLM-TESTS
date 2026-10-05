@@ -1,0 +1,36 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "sampled_video_temporal_reasoning_v5",
+  "video": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Videos/recording_07/full.mp4",
+  "timestamps_seconds": [
+    40.0,
+    44.0,
+    48.0,
+    51.0,
+    54.0,
+    56.0
+  ],
+  "frame_paths": [
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_40.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_44.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_48.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_51.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_54.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v5/frame_56.0s.jpg"
+  ],
+  "results": {
+    "temporal_visibility": {
+      "question": "For EACH timestamp, answer exactly one line using this format:\n40s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n44s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n48s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n51s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n54s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n56s: Staircase=<clearly visible|partly visible/cropped|not visible>; EXIT=<clearly visible|partly visible/cropped|not visible>\n\nUse only what is actually visible in each image. Do not infer what happens between timestamps.",
+      "model_answer": "40s: Staircase=partly visible/cropped; EXIT=partly visible/cropped\n44s: Staircase=partly visible/cropped; EXIT=partly visible/cropped\n48s: Staircase=partly visible/cropped; EXIT=partly visible/cropped\n51s: Staircase=partly visible/cropped;",
+      "latency_seconds": 2.199,
+      "peak_gpu_memory_allocated_mb": 3392.6
+    },
+    "final_frame": {
+      "question": "Look ONLY at the 56.0-second frame. Answer exactly:\nStaircase=<Yes|No>\nEXIT sign=<Yes|No>\nThen give one short sentence describing what is visible around the doorway.",
+      "model_answer": "Exit sign=<Yes>\nThe visible surroundings around the doorway include white tiled walls, red doors with metal handles, and a concrete floor.",
+      "latency_seconds": 0.527,
+      "peak_gpu_memory_allocated_mb": 2652.3
+    }
+  },
+  "note": "Six sampled images focus on the approach to the doorway. The temporal visibility question uses all six sampled frames. The final-frame question uses only the 56.0-second frame. This is image-sequence reasoning, not native video input. The exact time an object enters or leaves the frame cannot be determined from sparse samples alone."
+}

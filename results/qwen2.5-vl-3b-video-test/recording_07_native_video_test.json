@@ -1,0 +1,12 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "native_video_processing",
+  "video": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Videos/recording_07/full.mp4",
+  "input_type": "native_video",
+  "video_extraction_for_model": false,
+  "question": "Watch the entire video and describe the temporal change as the camera\napproaches the doorway near the end.\n\nFocus specifically on the staircase and the EXIT sign.\n\nExplain:\n1. When they are visible during the approach.\n2. How their visibility changes as the camera gets closer.\n3. What is visible in the final part of the video around 56 seconds.\n4. Whether the staircase and EXIT sign are still visible in the final view.\n\nBase your answer on the video itself. Do not assume or invent events\nthat are not visible.",
+  "model_answer": "The video begins with a wide shot of an office building lobby. The camera pans to the right, revealing a large carpeted staircase leading up to an upper floor. As the camera continues to pan, it captures the EXIT sign mounted on the wall above the staircase. The camera then moves forward, providing a closer view of the staircase and EXIT sign.\n\nAs the camera approaches the staircase, the details become more prominent. The carpeted steps and the railing become clearer, and the EXIT sign is easily visible against the blue walls. The camera continues to move forward, maintaining its focus on the staircase and EXIT sign.\n\nIn the final part of the video, around 56 seconds into the clip, the camera has moved significantly closer to the staircase andEXIT sign. The details of the carpeted steps and",
+  "latency_seconds": 19.332,
+  "peak_gpu_memory_allocated_mb": 11378.8,
+  "note": "The MP4 file was passed directly to Qwen2.5-VL through the native video input pathway. No OpenCV-extracted JPEG frames were supplied to the model."
+}

@@ -1,0 +1,170 @@
+{
+  "model": "google/gemma-3-4b-it",
+  "experiment": "robot_orchestration_v1",
+  "command": "Find the red door and go there.",
+  "architecture_role": "Gemma acts as a closed-loop high-level orchestrator. It selects one tool at a time, receives the tool result, updates its decision, and continues until the goal is verified.",
+  "tools": {
+    "LOCALIZE": "Determine the robot's current position and orientation.",
+    "QUERY_MAP": "Query the robot's map for a named location or object.",
+    "NAVIGATE_TO": "Send a navigation goal to Nav2 for a known target.",
+    "ASK_VLM_ABOUT_CURRENT_VIEW": "Ask the vision-language model about what is visible in the robot's current camera view.",
+    "VERIFY_LOCATION": "Verify that the robot has reached the intended target."
+  },
+  "simulation": {
+    "enabled": true,
+    "description": "Tool calls are simulated. No real robot, Nav2, map service, or VLM is executed."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "model_answer": "{\n  \"action\": \"LOCALIZE\",\n  \"reason\": \"We need to determine the robot's current location before we can find the red door.\",\n  \"target\": null\n}",
+      "parsed_action": {
+        "action": "LOCALIZE",
+        "reason": "We need to determine the robot's current location before we can find the red door.",
+        "target": null
+      },
+      "strict_json": true,
+      "valid_action": true,
+      "tool_result": {
+        "tool": "LOCALIZE",
+        "status": "success",
+        "robot_position": "office lobby",
+        "orientation": "toward main corridor"
+      },
+      "state_after_tool": {
+        "robot_localized": true,
+        "known_targets": [
+          "red door"
+        ],
+        "current_observation": null,
+        "navigation_status": null,
+        "verified": false
+      },
+      "latency_seconds": 1.216,
+      "peak_gpu_memory_allocated_mb": 8372.3
+    },
+    {
+      "step": 2,
+      "model_answer": "```json\n{\n  \"action\": \"QUERY_MAP\",\n  \"reason\": \"I need to find the red door to fulfill the user's command. Querying the map will allow me to identify its location.\",\n  \"target\": \"red door\"\n}\n```",
+      "parsed_action": {
+        "action": "QUERY_MAP",
+        "reason": "I need to find the red door to fulfill the user's command. Querying the map will allow me to identify its location.",
+        "target": "red door"
+      },
+      "strict_json": false,
+      "valid_action": true,
+      "tool_result": {
+        "tool": "QUERY_MAP",
+        "status": "success",
+        "target_found": false,
+        "message": "No object named 'red door' is registered in the semantic map."
+      },
+      "state_after_tool": {
+        "robot_localized": true,
+        "known_targets": [
+          "red door"
+        ],
+        "current_observation": null,
+        "navigation_status": null,
+        "verified": false
+      },
+      "latency_seconds": 1.018,
+      "peak_gpu_memory_allocated_mb": 8385.2
+    },
+    {
+      "step": 3,
+      "model_answer": "```json\n{\n  \"action\": \"ASK_VLM_ABOUT_CURRENT_VIEW\",\n  \"reason\": \"The map does not contain the 'red door', so I need to use visual perception to find it.\",\n  \"target\": null\n}\n```",
+      "parsed_action": {
+        "action": "ASK_VLM_ABOUT_CURRENT_VIEW",
+        "reason": "The map does not contain the 'red door', so I need to use visual perception to find it.",
+        "target": null
+      },
+      "strict_json": false,
+      "valid_action": true,
+      "tool_result": {
+        "tool": "ASK_VLM_ABOUT_CURRENT_VIEW",
+        "status": "success",
+        "observation": "A red door is visible ahead on the right side of the corridor.",
+        "target": "red door",
+        "relative_location": "ahead on the right"
+      },
+      "state_after_tool": {
+        "robot_localized": true,
+        "known_targets": [
+          "red door"
+        ],
+        "current_observation": "A red door is visible ahead on the right side of the corridor.",
+        "navigation_status": null,
+        "verified": false
+      },
+      "latency_seconds": 0.992,
+      "peak_gpu_memory_allocated_mb": 8385.8
+    },
+    {
+      "step": 4,
+      "model_answer": "```json\n{\n  \"action\": \"NAVIGATE_TO\",\n  \"reason\": \"The user wants to go to the red door, and the robot has identified its relative location. Navigation is the appropriate action to move the robot towards the target.\",\n  \"target\": \"red door\"\n}\n```",
+      "parsed_action": {
+        "action": "NAVIGATE_TO",
+        "reason": "The user wants to go to the red door, and the robot has identified its relative location. Navigation is the appropriate action to move the robot towards the target.",
+        "target": "red door"
+      },
+      "strict_json": false,
+      "valid_action": true,
+      "tool_result": {
+        "tool": "NAVIGATE_TO",
+        "status": "success",
+        "target": "red door",
+        "message": "Navigation to 'red door' completed successfully."
+      },
+      "state_after_tool": {
+        "robot_localized": true,
+        "known_targets": [
+          "red door"
+        ],
+        "current_observation": "Robot is now at red door.",
+        "navigation_status": "success",
+        "verified": false
+      },
+      "latency_seconds": 1.169,
+      "peak_gpu_memory_allocated_mb": 8395.5
+    },
+    {
+      "step": 5,
+      "model_answer": "```json\n{\n  \"action\": \"VERIFY_LOCATION\",\n  \"reason\": \"The user command was to 'Find the red door and go there'. The robot has navigated to the red door and the current observation confirms it is at the red door. Now we need to verify that the robot is actually at the target location.\",\n  \"target\": \"red door\"\n}\n```",
+      "parsed_action": {
+        "action": "VERIFY_LOCATION",
+        "reason": "The user command was to 'Find the red door and go there'. The robot has navigated to the red door and the current observation confirms it is at the red door. Now we need to verify that the robot is actually at the target location.",
+        "target": "red door"
+      },
+      "strict_json": false,
+      "valid_action": true,
+      "tool_result": {
+        "tool": "VERIFY_LOCATION",
+        "status": "success",
+        "verified": true,
+        "message": "The robot has reached and verified the target 'red door'."
+      },
+      "state_after_tool": {
+        "robot_localized": true,
+        "known_targets": [
+          "red door"
+        ],
+        "current_observation": "Robot is now at red door.",
+        "navigation_status": "success",
+        "verified": true
+      },
+      "latency_seconds": 1.36,
+      "peak_gpu_memory_allocated_mb": 8388.1
+    }
+  ],
+  "final_state": {
+    "robot_localized": true,
+    "known_targets": [
+      "red door"
+    ],
+    "current_observation": "Robot is now at red door.",
+    "navigation_status": "success",
+    "verified": true
+  },
+  "total_latency_seconds": 5.767
+}

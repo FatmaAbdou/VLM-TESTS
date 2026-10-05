@@ -1,0 +1,36 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "experiment": "sampled_video_temporal_reasoning_v4",
+  "video": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Videos/recording_07/full.mp4",
+  "timestamps_seconds": [
+    40.0,
+    44.0,
+    48.0,
+    51.0,
+    54.0,
+    56.0
+  ],
+  "frame_paths": [
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_40.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_44.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_48.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_51.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_54.0s.jpg",
+    "/home/lyth2/VLM-TESTS/results/qwen2.5-vl-3b-video-test/sampled_frames_v4/frame_56.0s.jpg"
+  ],
+  "results": {
+    "temporal_visibility": {
+      "question": "Track the staircase and EXIT sign across these frames in chronological order. At each timestamp, state whether each is clearly visible, partly visible/cropped, or not visible. Describe how visibility changes. Do not guess what happens between sampled timestamps.",
+      "model_answer": "At 40.0 seconds:\n- Staircase: Not visible\n- Exit sign: Not visible\n\nAt 44.0 seconds:\n- Staircase: Partly visible/cropped\n- Exit sign: Partly visible/cropped\n\nAt 48.0 seconds:\n- Staircase: Partly visible/cropped\n- Exit sign: Partly visible/cropped",
+      "latency_seconds": 3.518,
+      "peak_gpu_memory_allocated_mb": 3391.8
+    },
+    "final_frame": {
+      "question": "In the frame at 56.0 seconds, is the staircase visible? Is the EXIT sign visible? Briefly describe what is actually visible around the doorway, including any cropping.",
+      "model_answer": "Yes, the staircase is visible in the frame at 56.0 seconds. The EXIT sign is also visible above the doorway. The view includes part of the staircase and the EXIT sign, but the staircase itself is partially cropped out of the frame.",
+      "latency_seconds": 1.342,
+      "peak_gpu_memory_allocated_mb": 3391.8
+    }
+  },
+  "note": "Six sampled images focus on the approach to the doorway. This is image-sequence reasoning, not native video input. The exact time an object enters or leaves the frame cannot be determined from sparse samples alone."
+}
