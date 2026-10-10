@@ -396,6 +396,7 @@
         "the red door frame",
         "the doorway has a red door frame",
         "a red door frame is visible",
+        " Red doors with handles.",
         "The distinctive feature visible around the doorway is the red door frame."
       ],
       "answer_type": "categorical",
@@ -708,6 +709,7 @@
         "yes",
         "yes, there is an area where people could sit",
         "yes, people could sit there",
+        " Yes, there is a sofa and a chair with a table.",
         "yes, there is a place to sit"
       ],
       "answer_type": "yes_no",

@@ -1,0 +1,53 @@
+{
+  "model": "google/gemma-3-4b-it",
+  "model_variant": "gemma3-4b-zed-default-processor",
+  "quantized": true,
+  "quantization": "4-bit",
+  "image_preprocessing": "gemma_processor_defaults",
+  "custom_min_pixels": null,
+  "custom_max_pixels": null,
+  "benchmark_file": "/home/lyth2/VLM-TESTS/benchmark/office_v2_zed93.json",
+  "image_directory": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Images",
+  "summary": {
+    "cases": 1,
+    "scored_cases": 1,
+    "accuracy": 0.0,
+    "latency": {
+      "mean_seconds": 1.6704553510062397,
+      "median_seconds": 1.6704553510062397,
+      "p95_seconds": 1.6704553510062397,
+      "maximum_seconds": 1.6704553510062397
+    },
+    "capability_accuracy": {
+      "Object Recognition": {
+        "correct": 0.0,
+        "total": 1,
+        "accuracy": 0.0
+      }
+    },
+    "peak_gpu_vram_mb": 3418.8
+  },
+  "results": [
+    {
+      "test_id": "OFFICE-009",
+      "category": "Object Recognition",
+      "input_media": [
+        "frame_059"
+      ],
+      "question": "Is a staircase visible on the right side of the image?",
+      "ground_truth": "Yes",
+      "accepted_answers": [
+        "yes",
+        "yes, a staircase is visible",
+        "yes, a staircase is visible on the right",
+        "yes, the staircase is visible on the right side"
+      ],
+      "answer_type": "yes_no",
+      "model_answer": "",
+      "correct": 0.0,
+      "latency_seconds": 1.6704553510062397,
+      "gpu_vram_mb": 3418.8,
+      "gpu_utilization_percent": null
+    }
+  ]
+}

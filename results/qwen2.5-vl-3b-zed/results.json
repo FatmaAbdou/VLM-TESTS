@@ -3,19 +3,19 @@
   "model_variant": "qwen3b-zed",
   "quantized": true,
   "quantization": "4-bit",
-  "benchmark_file": "C:\\VLM-local\\VLM-TESTS\\benchmark\\office_v2_zed93.json",
-  "image_directory": "C:\\VLM-local\\VLM-TESTS\\benchmark\\assets\\office\\Images",
+  "benchmark_file": "/home/lyth2/VLM-TESTS/benchmark/office_v2_zed93.json",
+  "image_directory": "/home/lyth2/VLM-TESTS/benchmark/assets/office/Images",
   "vision_min_pixels": 3136,
   "vision_max_pixels": 602112,
   "summary": {
     "cases": 49,
     "scored_cases": 49,
-    "accuracy": 0.8571428571428571,
+    "accuracy": 0.8367346938775511,
     "latency": {
-      "mean_seconds": 4.161153879592033,
-      "median_seconds": 3.9956585000036284,
-      "p95_seconds": 11.989300300003379,
-      "maximum_seconds": 15.83171030000085
+      "mean_seconds": 0.29175438107898916,
+      "median_seconds": 0.318871557014063,
+      "p95_seconds": 0.44181218300946057,
+      "maximum_seconds": 0.6682607839466073
     },
     "capability_accuracy": {
       "Object Recognition": {
@@ -24,9 +24,9 @@
         "accuracy": 0.9285714285714286
       },
       "Attribute Recognition": {
-        "correct": 5.0,
+        "correct": 4.0,
         "total": 6,
-        "accuracy": 0.8333333333333334
+        "accuracy": 0.6666666666666666
       },
       "Spatial Reasoning": {
         "correct": 6.0,
@@ -69,7 +69,7 @@
         "accuracy": 1.0
       }
     },
-    "peak_gpu_vram_mb": 3467.5
+    "peak_gpu_vram_mb": 2948.2
   },
   "results": [
     {
@@ -89,8 +89,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.0265672000023187,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.16717940499074757,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -110,8 +110,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there is a black screen visible on the wall.",
       "correct": 1.0,
-      "latency_seconds": 4.013447500001348,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.3330869180499576,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -132,8 +132,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, computer screens are visible on the office desks.",
       "correct": 1.0,
-      "latency_seconds": 3.9303164000011748,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.318871557014063,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -153,8 +153,8 @@
       "answer_type": "categorical",
       "model_answer": "Green",
       "correct": 1.0,
-      "latency_seconds": 2.047704899996461,
-      "gpu_vram_mb": 2655.0,
+      "latency_seconds": 0.16739567002514377,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -179,8 +179,8 @@
       "answer_type": "categorical",
       "model_answer": "Gold",
       "correct": 1.0,
-      "latency_seconds": 1.9925978000028408,
-      "gpu_vram_mb": 2654.8,
+      "latency_seconds": 0.17012477898970246,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -205,8 +205,8 @@
       "answer_type": "spatial",
       "model_answer": "To the right",
       "correct": 1.0,
-      "latency_seconds": 2.457207899999048,
-      "gpu_vram_mb": 2655.9,
+      "latency_seconds": 0.25611454900354147,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -230,8 +230,8 @@
       "answer_type": "spatial",
       "model_answer": "The low table is located between the two couches.",
       "correct": 1.0,
-      "latency_seconds": 3.9745928999982425,
-      "gpu_vram_mb": 2655.0,
+      "latency_seconds": 0.32711845298763365,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -252,8 +252,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there is a low table in the image.",
       "correct": 1.0,
-      "latency_seconds": 3.9956585000036284,
-      "gpu_vram_mb": 2651.1,
+      "latency_seconds": 0.3254309030016884,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -275,8 +275,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there are two couches visible in the seating area.",
       "correct": 1.0,
-      "latency_seconds": 4.330682499996328,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.35631445702165365,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -301,8 +301,8 @@
       "answer_type": "free_text",
       "model_answer": "Table",
       "correct": 1.0,
-      "latency_seconds": 2.146044000000984,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.1711251279921271,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -330,8 +330,8 @@
       "answer_type": "categorical",
       "model_answer": "Couch",
       "correct": 1.0,
-      "latency_seconds": 2.252511400001822,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.18610928894486278,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -352,8 +352,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, the green plants are not partly hidden by the couches.",
       "correct": 0.0,
-      "latency_seconds": 4.597183500001847,
-      "gpu_vram_mb": 2655.0,
+      "latency_seconds": 0.37393713602796197,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -373,8 +373,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.090869899999234,
-      "gpu_vram_mb": 2654.8,
+      "latency_seconds": 0.17133133602328598,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -395,8 +395,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, elevators are visible ahead in the image.",
       "correct": 1.0,
-      "latency_seconds": 4.03152090000367,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.33136144798481837,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -416,8 +416,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.13327240000217,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.17567699099890888,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -438,8 +438,8 @@
       "answer_type": "categorical",
       "model_answer": "Red",
       "correct": 1.0,
-      "latency_seconds": 2.0766253999972832,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.1753285460290499,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -461,8 +461,8 @@
       "answer_type": "yes_no",
       "model_answer": "No",
       "correct": 1.0,
-      "latency_seconds": 11.058527799999865,
-      "gpu_vram_mb": 3467.5,
+      "latency_seconds": 0.5223763199755922,
+      "gpu_vram_mb": 2948.2,
       "gpu_utilization_percent": null
     },
     {
@@ -487,8 +487,8 @@
       "answer_type": "free_text",
       "model_answer": "The staircase becomes smaller in size as the viewpoint moves closer to the doorway.",
       "correct": 0.0,
-      "latency_seconds": 15.83171030000085,
-      "gpu_vram_mb": 3465.0,
+      "latency_seconds": 0.6682607839466073,
+      "gpu_vram_mb": 2948.2,
       "gpu_utilization_percent": null
     },
     {
@@ -511,8 +511,8 @@
       "answer_type": "spatial",
       "model_answer": "The staircase is to the right of the open doorway ahead.",
       "correct": 1.0,
-      "latency_seconds": 4.2616133999981685,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.33797757496358827,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -534,13 +534,14 @@
         "the red door frame",
         "the doorway has a red door frame",
         "a red door frame is visible",
+        " Red doors with handles.",
         "The distinctive feature visible around the doorway is the red door frame."
       ],
       "answer_type": "categorical",
       "model_answer": "The distinctive feature visible around the doorway is the black trim at the bottom of the door frame.",
       "correct": 0.0,
-      "latency_seconds": 5.52998430000298,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.4404831100255251,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -560,8 +561,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.0807532999970135,
-      "gpu_vram_mb": 2655.0,
+      "latency_seconds": 0.16841223801020533,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -582,8 +583,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, dark couches are visible in the seating area.",
       "correct": 1.0,
-      "latency_seconds": 4.154011899998295,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.3368066329858266,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -604,8 +605,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there is a low table visible between the two couches.",
       "correct": 1.0,
-      "latency_seconds": 4.670128700003261,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.36900984501698986,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -627,8 +628,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, an elevator is not visible in this close view of the doorway.",
       "correct": 1.0,
-      "latency_seconds": 5.42317919999914,
-      "gpu_vram_mb": 2654.8,
+      "latency_seconds": 0.39184382295934483,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -649,8 +650,8 @@
       "answer_type": "spatial",
       "model_answer": "The reception desk is to the left of the robot vacuum.",
       "correct": 1.0,
-      "latency_seconds": 4.5565943000037805,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.39191688096616417,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -676,8 +677,8 @@
       "answer_type": "free_text",
       "model_answer": "Table",
       "correct": 1.0,
-      "latency_seconds": 2.191924899998412,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.17188800999429077,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -699,8 +700,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there are green leaves in the frame.",
       "correct": 1.0,
-      "latency_seconds": 3.9903082000018912,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.30526704399380833,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -722,8 +723,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, gold stanchions with red rope are visible near the reception area.",
       "correct": 1.0,
-      "latency_seconds": 5.562385500001255,
-      "gpu_vram_mb": 2655.2,
+      "latency_seconds": 0.4304398589883931,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -744,8 +745,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, computer monitors are visible on the office desks.",
       "correct": 1.0,
-      "latency_seconds": 4.208966099999088,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.32087629300076514,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -770,8 +771,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, there are no trash bins underneath the office desks.",
       "correct": 0.0,
-      "latency_seconds": 4.35248600000341,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.33521970198489726,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -790,10 +791,10 @@
         "yes, both images show the same lobby area"
       ],
       "answer_type": "yes_no",
-      "model_answer": "Yes, both images show the same general lobby area.",
+      "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 6.066909800007124,
-      "gpu_vram_mb": 2976.3,
+      "latency_seconds": 0.298947530973237,
+      "gpu_vram_mb": 2800.0,
       "gpu_utilization_percent": null
     },
     {
@@ -814,8 +815,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 4.0040452999965055,
-      "gpu_vram_mb": 2979.8,
+      "latency_seconds": 0.2975165570387617,
+      "gpu_vram_mb": 2800.0,
       "gpu_utilization_percent": null
     },
     {
@@ -841,8 +842,8 @@
       "answer_type": "categorical",
       "model_answer": "Gold",
       "correct": 1.0,
-      "latency_seconds": 2.0228643999944325,
-      "gpu_vram_mb": 2655.9,
+      "latency_seconds": 0.16352991695748642,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -863,8 +864,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes, there is a seating area in the scene.",
       "correct": 1.0,
-      "latency_seconds": 4.162778300000355,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.3248548260307871,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -884,8 +885,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.158472499999334,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.1617371939937584,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -900,13 +901,14 @@
         "yes",
         "yes, there is an area where people could sit",
         "yes, people could sit there",
+        " Yes, there is a sofa and a chair with a table.",
         "yes, there is a place to sit"
       ],
       "answer_type": "yes_no",
       "model_answer": "Yes, there is an area where people could sit.",
       "correct": 1.0,
-      "latency_seconds": 3.1556211999995867,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.31649966398254037,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -927,8 +929,8 @@
       "answer_type": "yes_no",
       "model_answer": "No",
       "correct": 0.0,
-      "latency_seconds": 1.9650173999980325,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.16229899501195177,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -948,8 +950,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, I cannot see green leaves from behind the couches.",
       "correct": 0.0,
-      "latency_seconds": 4.525801499999943,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.34759410499827936,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -971,8 +973,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, the green plants are partially blocked by the couches.",
       "correct": 1.0,
-      "latency_seconds": 4.5902456999974675,
-      "gpu_vram_mb": 2655.3,
+      "latency_seconds": 0.34688814397668466,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -992,8 +994,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.167153900001722,
-      "gpu_vram_mb": 2655.2,
+      "latency_seconds": 0.16201930597890168,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1015,8 +1017,8 @@
       "answer_type": "categorical",
       "model_answer": "The standalone stanchion is nearest to the robot.",
       "correct": 1.0,
-      "latency_seconds": 4.10260169999674,
-      "gpu_vram_mb": 2657.4,
+      "latency_seconds": 0.3136149990023114,
+      "gpu_vram_mb": 2652.2,
       "gpu_utilization_percent": null
     },
     {
@@ -1036,8 +1038,8 @@
       "answer_type": "yes_no",
       "model_answer": "No",
       "correct": 1.0,
-      "latency_seconds": 2.116618899999594,
-      "gpu_vram_mb": 2655.3,
+      "latency_seconds": 0.1614557720022276,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1057,8 +1059,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 2.022576299998036,
-      "gpu_vram_mb": 2655.7,
+      "latency_seconds": 0.1606750080245547,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1079,8 +1081,8 @@
       "answer_type": "yes_no",
       "model_answer": "Yes",
       "correct": 1.0,
-      "latency_seconds": 11.989300300003379,
-      "gpu_vram_mb": 3464.9,
+      "latency_seconds": 0.4345857979496941,
+      "gpu_vram_mb": 2948.2,
       "gpu_utilization_percent": null
     },
     {
@@ -1102,8 +1104,8 @@
       "answer_type": "yes_no",
       "model_answer": "No",
       "correct": 1.0,
-      "latency_seconds": 12.05939170000056,
-      "gpu_vram_mb": 3461.5,
+      "latency_seconds": 0.44181218300946057,
+      "gpu_vram_mb": 2948.2,
       "gpu_utilization_percent": null
     },
     {
@@ -1129,10 +1131,10 @@
         "Trash bins"
       ],
       "answer_type": "categorical",
-      "model_answer": "Trash bins",
-      "correct": 1.0,
-      "latency_seconds": 2.321851999993669,
-      "gpu_vram_mb": 2654.7,
+      "model_answer": "There are no bins visible underneath the office desks in the image.",
+      "correct": 0.0,
+      "latency_seconds": 0.35503881803015247,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1154,8 +1156,8 @@
       "answer_type": "yes_no",
       "model_answer": "No, trash bins are not visible underneath the office desks.",
       "correct": 0.0,
-      "latency_seconds": 4.278761499997927,
-      "gpu_vram_mb": 2653.5,
+      "latency_seconds": 0.32625408901367337,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1175,8 +1177,8 @@
       "answer_type": "count",
       "model_answer": "Two",
       "correct": 1.0,
-      "latency_seconds": 2.1694717000063974,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.16226025996729732,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     },
     {
@@ -1197,8 +1199,8 @@
       "answer_type": "count",
       "model_answer": "1",
       "correct": 1.0,
-      "latency_seconds": 2.0476790000029723,
-      "gpu_vram_mb": 2654.7,
+      "latency_seconds": 0.16109682503156364,
+      "gpu_vram_mb": 2652.1,
       "gpu_utilization_percent": null
     }
   ]
