@@ -1,3 +1,4 @@
+
 import argparse
 import csv
 import json
@@ -26,7 +27,7 @@ BENCHMARK_FILE = ROOT / "benchmark" / "office_v2_zed93.json"
 MANIFEST_FILE = ROOT / "benchmark" / "office_manifest.csv"
 IMAGE_DIR = ROOT / "benchmark" / "assets" / "office" / "Images"
 
-# Keep Gemma results separate from every Qwen run.
+# Gemma results stay separate from Qwen results.
 RESULTS_DIR = ROOT / "results" / "gemma-3-4b-zed-fullres-capped-test"
 
 
@@ -40,34 +41,38 @@ MAX_NEW_TOKENS = 64
 SYSTEM_PROMPT = """You are being evaluated on visual understanding.
 
 Use only information supported by the provided image(s).
-
 Answer briefly and directly.
-
 Do not invent information that cannot be observed."""
 
 
 # ============================================================
-# Argument parsing
+# Arguments
 # ============================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description=(
-            "Run Gemma 3 4B IT on the ZED office benchmark "
-            "using the Gemma processor's default image preprocessing."
-        )
+        description="Run Gemma 3 4B IT on the ZED office benchmark."
     )
+
     parser.add_argument(
         "--test-id",
         type=str,
         default=None,
-        help="Run only one benchmark case, e.g. OFFICE-009.",
+        help="Run one test, e.g. OFFICE-009.",
     )
+
+    parser.add_argument(
+        "--4bit",
+        dest="use_4bit",
+        action="store_true",
+        help="Use 4-bit quantization instead of BF16.",
+    )
+
     return parser.parse_args()
 
 
 # ============================================================
-# Benchmark and manifest loading
+# Load benchmark and image manifest
 # ============================================================
 
 def load_benchmark():
@@ -80,13 +85,16 @@ def load_benchmark():
         tests = data
 
     if not tests:
-        raise ValueError(f"No benchmark cases were found in {BENCHMARK_FILE}")
+        raise ValueError(
+            f"No benchmark cases found in {BENCHMARK_FILE}"
+        )
 
     return tests
 
 
 def load_manifest():
     manifest = {}
+
     with open(
         MANIFEST_FILE,
         "r",
@@ -94,8 +102,19 @@ def load_manifest():
         newline="",
     ) as f:
         reader = csv.DictReader(f)
+
+        required = {"frame_id", "filename"}
+        if not reader.fieldnames or not required.issubset(
+            set(reader.fieldnames)
+        ):
+            raise ValueError(
+                f"{MANIFEST_FILE} must contain columns: "
+                "frame_id, filename"
+            )
+
         for row in reader:
             manifest[row["frame_id"]] = row["filename"]
+
     return manifest
 
 
@@ -105,13 +124,17 @@ def load_manifest():
 
 def get_image_path(frame_id, manifest):
     if frame_id not in manifest:
-        raise KeyError(f"Frame '{frame_id}' was not found in {MANIFEST_FILE}")
+        raise KeyError(
+            f"Frame '{frame_id}' was not found in {MANIFEST_FILE}"
+        )
 
     image_path = IMAGE_DIR / manifest[frame_id]
-    if not image_path.exists():
+
+    if not image_path.is_file():
         raise FileNotFoundError(
             f"Image for {frame_id} does not exist:\n{image_path}"
         )
+
     return image_path
 
 
@@ -121,11 +144,14 @@ def load_images(input_media, manifest):
     for frame_id in input_media:
         image_path = get_image_path(frame_id, manifest)
 
-        # Verify that the source image can be opened. Do not resize it here.
+        # Verify that the original image is readable.
         with Image.open(image_path) as image:
             image.verify()
 
-        records.append({"frame_id": frame_id, "path": image_path})
+        records.append({
+            "frame_id": frame_id,
+            "path": image_path,
+        })
 
     return records
 
@@ -143,22 +169,33 @@ def build_prompt(test):
 
 
 # ============================================================
-# Gemma input preparation
+# Prepare Gemma multimodal inputs
 # ============================================================
 
 def prepare_inputs(processor, model, image_records, prompt):
-    # Gemma 3 uses its own chat template and image processor.
-    # Open images as RGB PIL images and pass them in the same order as input_media.
     images = []
+
     try:
         for record in image_records:
             with Image.open(record["path"]) as image:
                 images.append(image.convert("RGB"))
 
-        content = [{"type": "image", "url": image} for image in images]
-        content.append({"type": "text", "text": prompt})
+        # Use Gemma's native chat template.
+        # Do not manually resize the original images.
+        content = [
+            {"type": "image", "url": image}
+            for image in images
+        ]
 
-        messages = [{"role": "user", "content": content}]
+        content.append({
+            "type": "text",
+            "text": prompt,
+        })
+
+        messages = [{
+            "role": "user",
+            "content": content,
+        }]
 
         inputs = processor.apply_chat_template(
             messages,
@@ -168,13 +205,19 @@ def prepare_inputs(processor, model, image_records, prompt):
             return_tensors="pt",
         )
 
-        # Move tensor inputs to the model's device. device_map="auto" handles
-        # model placement; the model may span more than one device.
+        # The tested setup uses device_map="auto".
+        # Move inputs to the model's input device.
+        input_device = model.get_input_embeddings().weight.device
+
         inputs = {
-            key: value.to(model.device) if hasattr(value, "to") else value
+            key: value.to(input_device)
+            if isinstance(value, torch.Tensor)
+            else value
             for key, value in inputs.items()
         }
+
         return inputs
+
     finally:
         for image in images:
             image.close()
@@ -193,34 +236,48 @@ def reset_gpu_stats():
 def get_peak_vram_mb():
     if not torch.cuda.is_available():
         return None
-    return round(torch.cuda.max_memory_allocated() / (1024 ** 2), 1)
+
+    return round(
+        torch.cuda.max_memory_allocated() / (1024 ** 2),
+        1,
+    )
 
 
 # ============================================================
-# Model generation
+# Generate an answer
 # ============================================================
 
-def generate_answer(processor, model, inputs):
+def generate_answer(processor, model, inputs, debug=False):
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+
+    input_length = inputs["input_ids"].shape[-1]
+
+    # Use the model's own tokenizer IDs explicitly.
+    pad_token_id = processor.tokenizer.pad_token_id
+    eos_token_id = processor.tokenizer.eos_token_id
+
     with torch.inference_mode():
         generated_ids = model.generate(
             **inputs,
             max_new_tokens=MAX_NEW_TOKENS,
             do_sample=False,
+            use_cache=True,
+            pad_token_id=pad_token_id,
+            eos_token_id=eos_token_id,
         )
 
-    # Gemma's chat-template inputs include the prompt tokens; score/decode only
-    # the newly generated answer tokens.
-    input_length = inputs["input_ids"].shape[-1]
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+
+    # Decoder-only Gemma returns the input prompt followed by
+    # newly generated tokens. Decode only the new tokens.
+    if generated_ids.shape[-1] < input_length:
+        raise RuntimeError(
+            "Generation returned fewer tokens than the input prompt."
+        )
+
     generated_ids_trimmed = generated_ids[:, input_length:]
-
-    token_ids = generated_ids_trimmed[0].tolist()
-
-    print("\n--- TOKEN DIAGNOSTICS ---")
-    print("Generated token IDs:", token_ids)
-    print(
-        "Generated tokens:",
-        processor.tokenizer.convert_ids_to_tokens(token_ids),
-    )
 
     answer = processor.batch_decode(
         generated_ids_trimmed,
@@ -228,38 +285,88 @@ def generate_answer(processor, model, inputs):
         clean_up_tokenization_spaces=False,
     )[0].strip()
 
-    print("Decoded answer:", repr(answer))
-    print("--- END DIAGNOSTICS ---\n")
+    # Detect the previous failure mode rather than silently
+    # scoring an empty answer.
+    if not answer:
+        raw_ids = generated_ids_trimmed[0].tolist()
+
+        raise RuntimeError(
+            "Gemma generated an empty answer. "
+            f"Generated token IDs: {raw_ids}. "
+            "This case will not be scored."
+        )
+
+    if debug:
+        token_ids = generated_ids_trimmed[0].tolist()
+
+        print("\n--- TOKEN DIAGNOSTICS ---")
+        print("Input sequence length:", input_length)
+        print("Output sequence length:", generated_ids.shape[-1])
+        print("Generated token IDs:", token_ids)
+        print(
+            "Generated tokens:",
+            processor.tokenizer.convert_ids_to_tokens(token_ids),
+        )
+        print("Decoded answer:", repr(answer))
+        print("--- END DIAGNOSTICS ---\n")
+
     return answer
 
 
 # ============================================================
-# Model loading
+# Load processor and model
 # ============================================================
 
-def load_model():
-    print()
-    print("Loading Gemma processor...")
-    print("Image preprocessing: Gemma processor defaults")
+def load_model(use_4bit=False):
+    print("\nLoading Gemma processor...")
+
     processor = AutoProcessor.from_pretrained(MODEL_NAME)
 
-    print()
-    print("Loading Gemma 3 4B IT with 4-bit quantization...")
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_compute_dtype=(
-            torch.bfloat16 if torch.cuda.is_available()
-            and torch.cuda.is_bf16_supported()
-            else torch.float16
-        ),
-    )
+    if torch.cuda.is_available():
+        supports_bf16 = torch.cuda.is_bf16_supported()
+        compute_dtype = (
+            torch.bfloat16 if supports_bf16 else torch.float16
+        )
+    else:
+        compute_dtype = torch.float32
 
-    model = Gemma3ForConditionalGeneration.from_pretrained(
-        MODEL_NAME,
-        quantization_config=quantization_config,
-        device_map="auto",
-    )
+    print(f"Model: {MODEL_NAME}")
+    print(f"Quantization enabled: {use_4bit}")
+
+    if use_4bit:
+        if not torch.cuda.is_available():
+            raise RuntimeError(
+                "This 4-bit configuration requires a CUDA GPU."
+            )
+
+        print("Loading Gemma with 4-bit quantization...")
+
+        quantization_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_compute_dtype=compute_dtype,
+        )
+
+        model = Gemma3ForConditionalGeneration.from_pretrained(
+            MODEL_NAME,
+            quantization_config=quantization_config,
+            device_map="auto",
+        )
+
+    else:
+        print(f"Loading Gemma with {compute_dtype} precision...")
+
+        model = Gemma3ForConditionalGeneration.from_pretrained(
+            MODEL_NAME,
+            dtype=compute_dtype,
+            device_map="auto",
+        )
+
     model.eval()
+
+    print("Model loaded successfully.")
+    print("Padding token ID:", processor.tokenizer.pad_token_id)
+    print("EOS token ID:", processor.tokenizer.eos_token_id)
+
     return processor, model
 
 
@@ -272,8 +379,8 @@ def warm_up(processor, model, tests, manifest):
         return
 
     test = tests[0]
-    print()
-    print("Running GPU warm-up...")
+
+    print("\nRunning GPU warm-up...")
 
     image_records = load_images(test["input_media"], manifest)
     prompt = build_prompt(test)
@@ -281,46 +388,74 @@ def warm_up(processor, model, tests, manifest):
     reset_gpu_stats()
     start = time.perf_counter()
 
-    inputs = prepare_inputs(processor, model, image_records, prompt)
-    generate_answer(processor, model, inputs)
+    inputs = prepare_inputs(
+        processor,
+        model,
+        image_records,
+        prompt,
+    )
 
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
+    # Fail early if the model still produces only padding.
+    warmup_answer = generate_answer(
+        processor,
+        model,
+        inputs,
+        debug=True,
+    )
 
     elapsed = time.perf_counter() - start
+
+    print("Warm-up answer:", warmup_answer)
     print(f"Warm-up latency: {elapsed:.3f}s")
     print(f"Warm-up peak VRAM: {get_peak_vram_mb()} MB")
 
     del inputs
+
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+
     print("Warm-up complete.")
 
 
 # ============================================================
-# Run one test
+# Run one benchmark case
 # ============================================================
 
 def run_test(test, processor, model, manifest):
     test_id = test["test_id"]
-    image_records = load_images(test["input_media"], manifest)
+
+    image_records = load_images(
+        test["input_media"],
+        manifest,
+    )
+
     prompt = build_prompt(test)
 
     reset_gpu_stats()
+
     start = time.perf_counter()
 
-    inputs = prepare_inputs(processor, model, image_records, prompt)
-    answer = generate_answer(processor, model, inputs)
+    inputs = prepare_inputs(
+        processor,
+        model,
+        image_records,
+        prompt,
+    )
 
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
+    answer = generate_answer(
+        processor,
+        model,
+        inputs,
+        debug=False,
+    )
 
     latency = time.perf_counter() - start
     peak_vram = get_peak_vram_mb()
 
-    # Preserve the scoring function's expected field.
+    # Keep the existing scoring.py as the source of truth.
     score_test_copy = dict(test)
     score_test_copy["expected_answer"] = test["ground_truth"]
+
     score = score_test(score_test_copy, answer)
 
     result = {
@@ -333,12 +468,13 @@ def run_test(test, processor, model, manifest):
         "answer_type": test.get("answer_type"),
         "model_answer": answer,
         "correct": score,
-        "latency_seconds": latency,
+        "latency_seconds": round(latency, 6),
         "gpu_vram_mb": peak_vram,
         "gpu_utilization_percent": None,
     }
 
     del inputs
+
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
 
@@ -350,29 +486,46 @@ def run_test(test, processor, model, manifest):
 # ============================================================
 
 def calculate_accuracy(results):
-    scored = [result for result in results if result["correct"] is not None]
+    scored = [
+        result
+        for result in results
+        if result["correct"] is not None
+    ]
+
     if not scored:
         return 0.0
-    return sum(float(result["correct"]) for result in scored) / len(scored)
+
+    return sum(
+        float(result["correct"])
+        for result in scored
+    ) / len(scored)
 
 
 def calculate_capability_accuracy(results):
     grouped = {}
+
     for result in results:
-        category = result.get("category", "Unknown")
+        category = result.get("category") or "Unknown"
+
         if result["correct"] is None:
             continue
-        grouped.setdefault(category, []).append(float(result["correct"]))
+
+        grouped.setdefault(category, []).append(
+            float(result["correct"])
+        )
 
     output = {}
+
     for category, scores in grouped.items():
-        correct = sum(scores)
         total = len(scores)
+        correct = sum(scores)
+
         output[category] = {
             "correct": correct,
             "total": total,
             "accuracy": correct / total if total else 0.0,
         }
+
     return output
 
 
@@ -382,6 +535,7 @@ def calculate_latency(results):
         for result in results
         if result["latency_seconds"] is not None
     ]
+
     if not values:
         return {
             "mean_seconds": 0.0,
@@ -391,7 +545,12 @@ def calculate_latency(results):
         }
 
     values_sorted = sorted(values)
-    p95_index = min(len(values_sorted) - 1, int(0.95 * len(values_sorted)))
+
+    p95_index = min(
+        len(values_sorted) - 1,
+        max(0, int(0.95 * len(values_sorted))),
+    )
+
     return {
         "mean_seconds": statistics.mean(values),
         "median_seconds": statistics.median(values),
@@ -401,44 +560,110 @@ def calculate_latency(results):
 
 
 # ============================================================
+# Save results without overwriting earlier runs
+# ============================================================
+
+def save_results(output):
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    output_file = RESULTS_DIR / "results.json"
+
+    if output_file.exists():
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        output_file = RESULTS_DIR / f"results-{timestamp}.json"
+
+        if output_file.exists():
+            raise FileExistsError(
+                f"Refusing to overwrite existing results: {output_file}"
+            )
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(
+            output,
+            f,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+    return output_file
+
+
+# ============================================================
 # Main
 # ============================================================
 
 def main():
     args = parse_args()
 
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("Gemma 3 4B IT ZED Office Benchmark Runner")
     print("=" * 60)
+
     print(f"Benchmark: {BENCHMARK_FILE}")
+    print(f"Manifest: {MANIFEST_FILE}")
     print(f"Image directory: {IMAGE_DIR}")
     print(f"Model: {MODEL_NAME}")
-    print("Image preprocessing: Gemma processor defaults")
+    print(
+        "Precision:",
+        "4-bit" if args.use_4bit else "BF16/FP16",
+    )
+
+    if not BENCHMARK_FILE.is_file():
+        raise FileNotFoundError(
+            f"Benchmark not found: {BENCHMARK_FILE}"
+        )
+
+    if not MANIFEST_FILE.is_file():
+        raise FileNotFoundError(
+            f"Manifest not found: {MANIFEST_FILE}"
+        )
 
     if torch.cuda.is_available():
         print("Device: CUDA")
         print(f"GPU: {torch.cuda.get_device_name(0)}")
-        print(
-            "GPU VRAM: "
-            f"{torch.cuda.get_device_properties(0).total_memory / (1024 ** 3):.2f} GB"
+
+        total_vram = (
+            torch.cuda.get_device_properties(0).total_memory
+            / (1024 ** 3)
         )
+
+        print(f"GPU VRAM: {total_vram:.2f} GB")
     else:
         print("Device: CPU")
+        print("Warning: inference may be significantly slower.")
 
     tests = load_benchmark()
+
     if args.test_id:
-        tests = [test for test in tests if test["test_id"] == args.test_id]
+        tests = [
+            test
+            for test in tests
+            if test["test_id"] == args.test_id
+        ]
+
         if not tests:
-            raise ValueError(f"Test ID '{args.test_id}' was not found.")
+            raise ValueError(
+                f"Test ID '{args.test_id}' was not found."
+            )
 
     manifest = load_manifest()
+
     print(f"Loaded {len(tests)} benchmark cases.")
 
-    processor, model = load_model()
-    warm_up(processor, model, tests, manifest)
+    processor, model = load_model(
+        use_4bit=args.use_4bit,
+    )
+
+    # Do not proceed if warm-up fails.
+    warm_up(
+        processor,
+        model,
+        tests,
+        manifest,
+    )
 
     results = []
+
     print()
 
     for index, test in enumerate(tests, start=1):
@@ -446,15 +671,24 @@ def main():
         print(f"  Category: {test.get('category', 'Unknown')}")
 
         try:
-            result = run_test(test, processor, model, manifest)
+            result = run_test(
+                test,
+                processor,
+                model,
+                manifest,
+            )
+
             results.append(result)
+
             print(f"  Answer: {result['model_answer']}")
             print(f"  Expected: {result['ground_truth']}")
             print(f"  Correct: {result['correct']}")
             print(f"  Latency: {result['latency_seconds']:.3f}s")
             print(f"  Peak VRAM: {result['gpu_vram_mb']} MB")
+
         except Exception as exc:
             print(f"  ERROR: {type(exc).__name__}: {exc}")
+
             results.append({
                 "test_id": test["test_id"],
                 "category": test.get("category"),
@@ -470,10 +704,16 @@ def main():
                 "gpu_utilization_percent": None,
                 "error": str(exc),
             })
+
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
-    scored_results = [result for result in results if result["correct"] is not None]
+    scored_results = [
+        result
+        for result in results
+        if result["correct"] is not None
+    ]
+
     peak_values = [
         result["gpu_vram_mb"]
         for result in results
@@ -486,48 +726,58 @@ def main():
         "accuracy": calculate_accuracy(results),
         "latency": calculate_latency(results),
         "capability_accuracy": calculate_capability_accuracy(results),
-        "peak_gpu_vram_mb": max(peak_values) if peak_values else None,
+        "peak_gpu_vram_mb": (
+            max(peak_values) if peak_values else None
+        ),
     }
 
     output = {
         "model": MODEL_NAME,
         "model_variant": "gemma3-4b-zed-default-processor",
-        "quantized": True,
-        "quantization": "4-bit",
+        "quantized": args.use_4bit,
+        "quantization": "4-bit" if args.use_4bit else None,
+        "precision": (
+            "4-bit"
+            if args.use_4bit
+            else (
+                "bfloat16"
+                if torch.cuda.is_available()
+                and torch.cuda.is_bf16_supported()
+                else "float16"
+                if torch.cuda.is_available()
+                else "float32"
+            )
+        ),
         "image_preprocessing": "gemma_processor_defaults",
         "custom_min_pixels": None,
         "custom_max_pixels": None,
         "benchmark_file": str(BENCHMARK_FILE),
+        "manifest_file": str(MANIFEST_FILE),
         "image_directory": str(IMAGE_DIR),
         "summary": summary,
         "results": results,
     }
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = RESULTS_DIR / "results.json"
+    output_file = save_results(output)
 
-    # Never overwrite an earlier result file.
-    if output_file.exists():
-        timestamp = time.strftime("%Y%m%d-%H%M%S")
-        output_file = RESULTS_DIR / f"results-{timestamp}.json"
-        if output_file.exists():
-            raise FileExistsError(
-                f"Refusing to overwrite existing results: {output_file}"
-            )
-
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
-
-    print()
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("RUN COMPLETE")
     print("=" * 60)
     print(f"Cases: {summary['cases']}")
     print(f"Scored cases: {summary['scored_cases']}")
     print(f"Accuracy: {summary['accuracy']:.4f}")
-    print(f"Mean latency: {summary['latency']['mean_seconds']:.3f}s")
-    print(f"Median latency: {summary['latency']['median_seconds']:.3f}s")
-    print(f"P95 latency: {summary['latency']['p95_seconds']:.3f}s")
+    print(
+        f"Mean latency: "
+        f"{summary['latency']['mean_seconds']:.3f}s"
+    )
+    print(
+        f"Median latency: "
+        f"{summary['latency']['median_seconds']:.3f}s"
+    )
+    print(
+        f"P95 latency: "
+        f"{summary['latency']['p95_seconds']:.3f}s"
+    )
     print(f"Peak GPU VRAM: {summary['peak_gpu_vram_mb']} MB")
     print(f"Results saved to: {output_file}")
 
