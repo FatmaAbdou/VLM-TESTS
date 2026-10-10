@@ -26,7 +26,7 @@ BENCHMARK_FILE = ROOT / "benchmark" / "office_v2_zed93.json"
 MANIFEST_FILE = ROOT / "benchmark" / "office_manifest.csv"
 IMAGE_DIR = ROOT / "benchmark" / "assets" / "office" / "Images"
 
-# Separate directory so existing Gemma results remain untouched.
+# Keep the 4-bit experiment separate from other Gemma results.
 RESULTS_DIR = ROOT / "results" / "gemma-3-4b-zed-4bit-test"
 
 
@@ -51,7 +51,7 @@ Do not invent information that cannot be observed."""
 def parse_args():
     parser = argparse.ArgumentParser(
         description=(
-            "Run Gemma 3 4B IT with 4-bit quantization "
+            "Run Gemma 3 4B IT with 4-bit NF4 quantization "
             "on the ZED office benchmark."
         )
     )
@@ -60,14 +60,14 @@ def parse_args():
         "--test-id",
         type=str,
         default=None,
-        help="Run one test, e.g. OFFICE-009.",
+        help="Run one test, for example OFFICE-009.",
     )
 
     return parser.parse_args()
 
 
 # ============================================================
-# Load benchmark and image manifest
+# Load benchmark and manifest
 # ============================================================
 
 def load_benchmark():
@@ -99,6 +99,7 @@ def load_manifest():
         reader = csv.DictReader(f)
 
         required = {"frame_id", "filename"}
+
         if not reader.fieldnames or not required.issubset(
             set(reader.fieldnames)
         ):
@@ -243,22 +244,44 @@ def generate_answer(processor, model, inputs, debug=False):
     pad_token_id = processor.tokenizer.pad_token_id
     eos_token_id = processor.tokenizer.eos_token_id
 
+    if debug:
+        print("\n--- GENERATION DIAGNOSTICS ---")
+        print("Input token length:", input_length)
+        print("Padding token ID:", pad_token_id)
+        print("EOS token ID:", eos_token_id)
+        print("Input tensor device:", inputs["input_ids"].device)
+        print("Input tensor dtype:", inputs["input_ids"].dtype)
+
+    generation_kwargs = {
+        **inputs,
+        "max_new_tokens": MAX_NEW_TOKENS,
+        "do_sample": False,
+        "use_cache": True,
+    }
+
+    if pad_token_id is not None:
+        generation_kwargs["pad_token_id"] = pad_token_id
+
+        # Prevent the padding token from being generated as answer text.
+        # This is a diagnostic safeguard; it does not guarantee that
+        # the model will generate a meaningful answer.
+        generation_kwargs["bad_words_ids"] = [[pad_token_id]]
+
+    if eos_token_id is not None:
+        generation_kwargs["eos_token_id"] = eos_token_id
+
     with torch.inference_mode():
-        generated_ids = model.generate(
-            **inputs,
-            max_new_tokens=MAX_NEW_TOKENS,
-            do_sample=False,
-            use_cache=True,
-            pad_token_id=pad_token_id,
-            eos_token_id=eos_token_id,
-        )
+        generated_ids = model.generate(**generation_kwargs)
 
     if generated_ids.shape[-1] < input_length:
         raise RuntimeError(
-            "Generation returned fewer tokens than the input prompt."
+            "Generation returned fewer tokens than the input prompt. "
+            f"Input length: {input_length}; "
+            f"output length: {generated_ids.shape[-1]}."
         )
 
     generated_ids_trimmed = generated_ids[:, input_length:]
+    raw_ids = generated_ids_trimmed[0].tolist()
 
     answer = processor.batch_decode(
         generated_ids_trimmed,
@@ -266,28 +289,28 @@ def generate_answer(processor, model, inputs, debug=False):
         clean_up_tokenization_spaces=False,
     )[0].strip()
 
-    if not answer:
-        raw_ids = generated_ids_trimmed[0].tolist()
-
-        raise RuntimeError(
-            "Gemma generated an empty answer. "
-            f"Generated token IDs: {raw_ids}. "
-            "This case will not be scored."
-        )
-
     if debug:
-        token_ids = generated_ids_trimmed[0].tolist()
-
-        print("\n--- TOKEN DIAGNOSTICS ---")
-        print("Input sequence length:", input_length)
         print("Output sequence length:", generated_ids.shape[-1])
-        print("Generated token IDs:", token_ids)
+        print("Generated token IDs:", raw_ids)
+
         print(
             "Generated tokens:",
-            processor.tokenizer.convert_ids_to_tokens(token_ids),
+            processor.tokenizer.convert_ids_to_tokens(raw_ids),
         )
+
         print("Decoded answer:", repr(answer))
-        print("--- END DIAGNOSTICS ---\n")
+        print("--- END GENERATION DIAGNOSTICS ---\n")
+
+    if not answer:
+        raise RuntimeError(
+            "Gemma generated an empty answer after padding-token "
+            "suppression. "
+            f"Generated token IDs: {raw_ids}. "
+            f"Input length: {input_length}. "
+            f"Output length: {generated_ids.shape[-1]}. "
+            "Inspect the generation diagnostics before changing "
+            "the benchmark or scoring code."
+        )
 
     return answer
 
@@ -307,6 +330,7 @@ def load_model():
     processor = AutoProcessor.from_pretrained(MODEL_NAME)
 
     supports_bf16 = torch.cuda.is_bf16_supported()
+
     compute_dtype = (
         torch.bfloat16 if supports_bf16 else torch.float16
     )
@@ -332,6 +356,13 @@ def load_model():
     )
 
     model.eval()
+
+    # This is greedy generation, so sampling-only settings are unused.
+    # Clear them to avoid misleading top_p/top_k warnings.
+    if hasattr(model, "generation_config"):
+        model.generation_config.do_sample = False
+        model.generation_config.top_p = None
+        model.generation_config.top_k = None
 
     print("Model loaded successfully.")
     print("Padding token ID:", processor.tokenizer.pad_token_id)
@@ -588,6 +619,11 @@ def main():
             f"Manifest not found: {MANIFEST_FILE}"
         )
 
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            "This 4-bit runner requires a CUDA GPU."
+        )
+
     print("Device: CUDA")
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
@@ -595,6 +631,7 @@ def main():
         torch.cuda.get_device_properties(0).total_memory
         / (1024 ** 3)
     )
+
     print(f"GPU VRAM: {total_vram:.2f} GB")
 
     tests = load_benchmark()
@@ -617,6 +654,7 @@ def main():
 
     processor, model, compute_dtype = load_model()
 
+    # Warm-up is excluded from benchmark results and summary metrics.
     warm_up(
         processor,
         model,
@@ -717,18 +755,22 @@ def main():
     print(f"Cases: {summary['cases']}")
     print(f"Scored cases: {summary['scored_cases']}")
     print(f"Accuracy: {summary['accuracy']:.4f}")
+
     print(
         f"Mean latency: "
         f"{summary['latency']['mean_seconds']:.3f}s"
     )
+
     print(
         f"Median latency: "
         f"{summary['latency']['median_seconds']:.3f}s"
     )
+
     print(
         f"P95 latency: "
         f"{summary['latency']['p95_seconds']:.3f}s"
     )
+
     print(f"Peak GPU VRAM: {summary['peak_gpu_vram_mb']} MB")
     print(f"Results saved to: {output_file}")
 
