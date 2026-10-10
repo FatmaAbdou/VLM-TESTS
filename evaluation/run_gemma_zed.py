@@ -248,12 +248,12 @@ def get_peak_vram_mb():
 # ============================================================
 
 def generate_answer(processor, model, inputs, debug=False):
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
+    # No CUDA synchronization here.
+    # Synchronization is handled by run_test() and warm_up()
+    # at the same timing boundary as the Qwen runner.
 
     input_length = inputs["input_ids"].shape[-1]
 
-    # Use the model's own tokenizer IDs explicitly.
     pad_token_id = processor.tokenizer.pad_token_id
     eos_token_id = processor.tokenizer.eos_token_id
 
@@ -266,9 +266,6 @@ def generate_answer(processor, model, inputs, debug=False):
             pad_token_id=pad_token_id,
             eos_token_id=eos_token_id,
         )
-
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
 
     # Decoder-only Gemma returns the input prompt followed by
     # newly generated tokens. Decode only the new tokens.
@@ -285,8 +282,7 @@ def generate_answer(processor, model, inputs, debug=False):
         clean_up_tokenization_spaces=False,
     )[0].strip()
 
-    # Detect the previous failure mode rather than silently
-    # scoring an empty answer.
+    # Detect empty output rather than silently scoring it.
     if not answer:
         raw_ids = generated_ids_trimmed[0].tolist()
 
@@ -382,10 +378,13 @@ def warm_up(processor, model, tests, manifest):
 
     print("\nRunning GPU warm-up...")
 
+    # As in Qwen, disk image loading and prompt construction
+    # happen before the latency timer starts.
     image_records = load_images(test["input_media"], manifest)
     prompt = build_prompt(test)
 
     reset_gpu_stats()
+
     start = time.perf_counter()
 
     inputs = prepare_inputs(
@@ -395,13 +394,17 @@ def warm_up(processor, model, tests, manifest):
         prompt,
     )
 
-    # Fail early if the model still produces only padding.
     warmup_answer = generate_answer(
         processor,
         model,
         inputs,
         debug=True,
     )
+
+    # Match the Qwen runner: synchronize after answer generation
+    # and immediately before stopping the timer.
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
 
     elapsed = time.perf_counter() - start
 
@@ -424,6 +427,8 @@ def warm_up(processor, model, tests, manifest):
 def run_test(test, processor, model, manifest):
     test_id = test["test_id"]
 
+    # Match Qwen: load images and construct the prompt before
+    # starting the latency timer.
     image_records = load_images(
         test["input_media"],
         manifest,
@@ -435,6 +440,8 @@ def run_test(test, processor, model, manifest):
 
     start = time.perf_counter()
 
+    # Input preparation, preprocessing, and device transfer
+    # are included in the measured latency.
     inputs = prepare_inputs(
         processor,
         model,
@@ -442,6 +449,7 @@ def run_test(test, processor, model, manifest):
         prompt,
     )
 
+    # Generation and decoding are also included.
     answer = generate_answer(
         processor,
         model,
@@ -449,10 +457,16 @@ def run_test(test, processor, model, manifest):
         debug=False,
     )
 
+    # Match Qwen: wait for pending CUDA operations before
+    # stopping the timer.
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+
     latency = time.perf_counter() - start
     peak_vram = get_peak_vram_mb()
 
     # Keep the existing scoring.py as the source of truth.
+    # Scoring happens after the latency timer stops.
     score_test_copy = dict(test)
     score_test_copy["expected_answer"] = test["ground_truth"]
 
