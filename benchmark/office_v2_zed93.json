@@ -15,6 +15,7 @@
         "yes",
         "yes, a reception desk is visible",
         "yes, the reception desk is visible",
+        "yes, a reception desk is visible in the image",
         "yes, there is a reception desk visible"
       ],
       "answer_type": "yes_no",
@@ -32,6 +33,7 @@
         "yes",
         "yes, a black screen is visible",
         "yes, the black screen is visible",
+        "yes, a black screen is visible on the wall",
         "yes, there is a black screen visible on the wall"
       ],
       "answer_type": "yes_no",
@@ -241,7 +243,8 @@
         "yes, some green plants are partly hidden",
         "yes, some of the green plants are partly hidden by the couches",
         "yes, green plants are partly hidden behind the couches",
-        "yes, some plants are partly hidden behind the couches"
+        "yes, some plants are partly hidden behind the couches",
+        "yes, a green plant is partly hidden by the couch."
       ],
       "answer_type": "yes_no",
       "notes": "Some plants are partly hidden behind the couches."
@@ -258,7 +261,8 @@
         "yes",
         "yes, a staircase is visible",
         "yes, a staircase is visible on the right",
-        "yes, the staircase is visible on the right side"
+        "yes, the staircase is visible on the right side",
+        "yes, a staircase is visible on the right side of the image"
       ],
       "answer_type": "yes_no",
       "notes": "The downward stairwell is visible on the right."
@@ -293,6 +297,7 @@
         "yes",
         "yes, a metal trash bin is visible",
         "yes, the metal trash bin is visible near the staircase",
+        "yes, a metal trash bin is visible near the staircase",
         "yes, there is a metal trash bin near the staircase"
       ],
       "answer_type": "yes_no",
@@ -352,7 +357,8 @@
         "the staircase disappears",
         "the staircase goes out of view",
         "the staircase is no longer in view",
-        "the staircase disappears from view"
+        "the staircase disappears from view",
+        "The staircase appears to recede into the distance as the viewpoint moves closer to the doorway."
       ],
       "answer_type": "free_text",
       "notes": "The staircase is visible in frame_079 and frame_080 but no longer visible in frame_082."
@@ -624,7 +630,8 @@
         "yes",
         "yes, the two images show the same viewpoint",
         "yes, both images show the same viewpoint of the patterned-carpet corridor",
-        "yes, they show the same viewpoint of the patterned-carpet corridor"
+        "yes, they show the same viewpoint of the patterned-carpet corridor",
+        " Yes, the two images show the same viewpoint of the patterned-carpet corridor."
       ],
       "answer_type": "yes_no",
       "note": "frame_005 and frame_006 show the same patterned-carpet corridor from consecutive viewpoints. frame_006 is farther along the corridor and no longer includes the open doorway on the right."
@@ -665,7 +672,8 @@
         "yes, there is a seating area",
         "yes, a seating area is visible",
         "yes, the scene contains a seating area",
-        " Yes, there is a seating area in the scene."
+        " Yes, there is a seating area in the scene.",
+        " Yes, there are two sofas in the scene."
       ],
       "answer_type": "yes_no",
       "notes": "Scene-level wording diagnostic. The frame shows two couches arranged around a low table. This tests whether the model can interpret the group as a seating area rather than only recognize individual objects.",
@@ -710,7 +718,8 @@
         "yes, there is an area where people could sit",
         "yes, people could sit there",
         " Yes, there is a sofa and a chair with a table.",
-        "yes, there is a place to sit"
+        "yes, there is a place to sit",
+        "yes, there are sofas."
       ],
       "answer_type": "yes_no",
       "notes": "Functional scene-understanding wording diagnostic. The answer is based on the visible couches and low table, not on unseen assumptions about actual use.",
@@ -733,7 +742,8 @@
         "yes, the green plants are partially obscured",
         "yes, some green plants are partially obscured by the couches",
         "yes, the plants are partly blocked by the couches",
-        "yes, some plants are partly blocked by the couches"
+        "yes, some plants are partly blocked by the couches",
+        "Yes, the green plants are partially obscured by the couches"
       ],
       "answer_type": "yes_no",
       "notes": "Occlusion wording diagnostic corresponding to OFFICE-008. Green leaves remain visible while parts of the plants are blocked by the couches.",
@@ -754,7 +764,8 @@
         "yes",
         "yes, green leaves are visible",
         "yes, some green leaves are visible",
-        "yes, green leaves can be seen behind the couches"
+        "yes, green leaves can be seen behind the couches",
+        "Yes, there are green leaves behind the couches."
       ],
       "answer_type": "yes_no",
       "notes": "Small-object visibility diagnostic. This should be interpreted as detecting visible leaves, not as a complete occlusion judgment.",
