@@ -27,7 +27,6 @@ BENCHMARK_FILE = ROOT / "benchmark" / "office_v2_zed93.json"
 MANIFEST_FILE = ROOT / "benchmark" / "office_manifest.csv"
 IMAGE_DIR = ROOT / "benchmark" / "assets" / "office" / "Images"
 
-# Keep full-resolution results separate from the capped run.
 RESULTS_DIR = ROOT / "results" / "qwen2.5-vl-3b-zed-fullres-capped-test"
 
 
@@ -38,9 +37,8 @@ RESULTS_DIR = ROOT / "results" / "qwen2.5-vl-3b-zed-fullres-capped-test"
 MODEL_NAME = "Qwen/Qwen2.5-VL-3B-Instruct"
 MAX_NEW_TOKENS = 64
 
-# Use the processor's default image preprocessing settings.
-# No custom min_pixels or max_pixels are passed.
-
+MIN_PIXELS = 3136
+MAX_PIXELS = 28 * 28 * 768
 
 SYSTEM_PROMPT = """You are being evaluated on visual understanding.
 
@@ -59,7 +57,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description=(
             "Run Qwen2.5-VL-3B on the ZED office benchmark "
-            "using default image preprocessing settings."
+            "with capped image preprocessing."
         )
     )
 
@@ -137,7 +135,6 @@ def load_images(input_media, manifest):
     for frame_id in input_media:
         image_path = get_image_path(frame_id, manifest)
 
-        # Verify the original image without resizing or modifying it.
         with Image.open(image_path) as image:
             image.verify()
 
@@ -202,8 +199,6 @@ def prepare_inputs(processor, model, image_records, prompt):
 
     image_inputs, video_inputs = process_vision_info(messages)
 
-    # Important: do not pass custom min_pixels or max_pixels.
-    # The processor uses its own default image preprocessing.
     inputs = processor(
         text=[text_prompt],
         images=image_inputs,
@@ -243,7 +238,6 @@ def get_peak_vram_mb():
 # ============================================================
 # Model generation
 # ============================================================
-
 
 def generate_answer(processor, model, inputs):
     with torch.inference_mode():
@@ -290,24 +284,24 @@ def load_model():
     print()
     print("Loading processor...")
     print("Image preprocessing: capped")
-    print("Min pixels: 3136")
-    print(f"Max pixels: {28 * 28 * 768}")
+    print(f"Minimum pixels: {MIN_PIXELS}")
+    print(f"Maximum pixels: {MAX_PIXELS:,}")
 
     processor = AutoProcessor.from_pretrained(
-    MODEL_NAME,
-    min_pixels=3136,
-    max_pixels=28 * 28 * 768,
-)
+        MODEL_NAME,
+        min_pixels=MIN_PIXELS,
+        max_pixels=MAX_PIXELS,
+    )
 
     image_processor = processor.image_processor
 
     print(
-        "Processor default max_pixels:",
-        getattr(image_processor, "max_pixels", "Not exposed"),
+        "Processor minimum pixels:",
+        getattr(image_processor, "min_pixels", "Not exposed"),
     )
     print(
-        "Processor default min_pixels:",
-        getattr(image_processor, "min_pixels", "Not exposed"),
+        "Processor maximum pixels:",
+        getattr(image_processor, "max_pixels", "Not exposed"),
     )
 
     print()
@@ -417,7 +411,6 @@ def run_test(test, processor, model, manifest):
     latency = time.perf_counter() - start
     peak_vram = get_peak_vram_mb()
 
-    # Preserve the existing scoring function's expected field.
     score_test_copy = dict(test)
     score_test_copy["expected_answer"] = test["ground_truth"]
 
@@ -536,13 +529,15 @@ def main():
 
     print()
     print("=" * 60)
-    print("Qwen2.5-VL-3B ZED Full-Resolution Runner")
+    print("Qwen2.5-VL-3B ZED Office Benchmark Runner")
     print("=" * 60)
 
     print(f"Benchmark: {BENCHMARK_FILE}")
     print(f"Image directory: {IMAGE_DIR}")
     print(f"Model: {MODEL_NAME}")
-    print("Image preprocessing: default processor settings")
+    print("Image preprocessing: capped")
+    print(f"Minimum pixels: {MIN_PIXELS}")
+    print(f"Maximum pixels: {MAX_PIXELS:,}")
 
     if torch.cuda.is_available():
         print("Device: CUDA")
@@ -652,12 +647,12 @@ def main():
 
     output = {
         "model": MODEL_NAME,
-        "model_variant": "qwen3b-zed-fullres",
+        "model_variant": "qwen3b-zed-capped",
         "quantized": True,
         "quantization": "4-bit",
-        "image_preprocessing": "processor_defaults",
-        "custom_min_pixels": None,
-        "custom_max_pixels": None,
+        "image_preprocessing": "custom_pixel_limits",
+        "custom_min_pixels": MIN_PIXELS,
+        "custom_max_pixels": MAX_PIXELS,
         "benchmark_file": str(BENCHMARK_FILE),
         "image_directory": str(IMAGE_DIR),
         "summary": summary,
