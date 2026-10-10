@@ -269,11 +269,14 @@ def load_model():
         bnb_4bit_use_double_quant=False,
     )
 
+    
     model = Gemma3ForConditionalGeneration.from_pretrained(
-        MODEL_NAME,
-        quantization_config=quantization_config,
-        device_map="auto",
+    MODEL_NAME,
+    quantization_config=quantization_config,
+    dtype=compute_dtype,
+    device_map="auto",
     )
+
 
     model.eval()
 
