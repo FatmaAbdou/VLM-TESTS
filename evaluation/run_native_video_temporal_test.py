@@ -23,13 +23,13 @@ VIDEO_PATH = Path(
 
 OUTPUT_PATH = Path(
     "results/qwen2.5-vl-3b-video-test/"
-    "recording_07_native_video_temporal_test2.json"
+    "recording_07_native_video_temporal_test3.json"
 )
 
 MIN_PIXELS = 3136
 MAX_PIXELS = 28 * 28 * 768
 
-MAX_NEW_TOKENS = 350
+MAX_NEW_TOKENS = 500
 
 
 # ============================================================
@@ -105,6 +105,10 @@ Watch the entire video and answer both questions below.
 Use only information visible in the video. Pay particular
 attention to the final approximately 10 seconds.
 
+Do not assume that the camera crossed a doorway merely
+because it approached the doorway or because objects
+disappeared from view.
+
 ============================================================
 QUESTION 1 — STAIRCASE AND EXIT SIGN
 ============================================================
@@ -119,87 +123,115 @@ the camera approaches the doorway near the end.
 At approximately 56 seconds, is the staircase visible?
 Is the EXIT sign visible?
 If the video ends before that timestamp, describe the
-actual final frame instead.
+actual final view.
 
 3. CHANGE:
-For each object, state whether it:
+For EACH object separately, state whether it:
 - Goes from visible to not visible.
 - Remains visible.
 - Becomes partly visible or cropped.
 - Cannot be determined from the available observations.
 
 4. EVIDENCE:
-Briefly describe what is actually visible around the doorway
+Describe what is actually visible around the doorway
 in the final part of the video.
 
 ============================================================
 QUESTION 2 — WALKING THROUGH THE DOORWAY
 ============================================================
 
-Focus on the final approximately 10 seconds of the video.
+Focus on the final approximately 10 seconds.
 
 1. ACTION:
-Does the camera appear to:
-- Pass through the doorway.
-- Approach the doorway without crossing it.
-- Stop before the doorway.
-- Move away from the doorway.
-- Remain uncertain because the evidence is insufficient?
+Describe the camera's observed movement near the doorway.
+Does it appear to cross the threshold, approach without
+crossing, stop, move away, or remain uncertain?
 
 2. BEFORE CROSSING:
 Describe the visible scene immediately before the possible
-doorway crossing.
+crossing. Identify the doorway and surrounding features
+that are actually visible.
 
 3. DURING CROSSING:
-Describe the visual changes, if any, that indicate the
-camera is moving through the doorway. Consider:
-- The position and apparent size of the doorframe.
-- Whether the doorframe moves past the camera's viewpoint.
-- Whether the visible scene changes as the camera advances.
-- Whether the camera appears to cross the doorway threshold.
+Describe the observed visual changes that indicate whether
+the camera passes through the doorway. Consider the position
+of the doorframe, movement relative to the threshold, and
+changes in the visible scene.
 
 4. AFTER CROSSING:
 Describe the scene visible after the possible crossing.
-Does the viewpoint appear to have moved to the other side
-of the doorway, or is that not established by the footage?
+Does the viewpoint appear to be on the other side of the
+doorway? Explain what supports this interpretation, or why
+the evidence is insufficient.
 
 5. CONCLUSION:
-Choose exactly ONE of the following labels:
+Choose exactly ONE label:
 
-CROSSED:
+CROSSED
 The video provides visual evidence that the camera passed
 through the doorway.
 
-APPROACHED_ONLY:
+APPROACHED_ONLY
 The camera approaches the doorway, but crossing is not
 visibly established.
 
-UNCERTAIN:
+UNCERTAIN
 The available visual evidence is insufficient to determine
 whether the camera crossed the doorway.
 
 6. EVIDENCE:
-Give the specific visual evidence supporting your conclusion.
-Distinguish observed motion from assumptions about what
-happened.
+Give specific visual evidence supporting the conclusion.
+Do not use the disappearance of the staircase or EXIT sign
+as proof of crossing unless other visual changes support it.
 
 ============================================================
-IMPORTANT RULES
+REQUIRED OUTPUT FORMAT
 ============================================================
 
-- Approaching a doorway does not necessarily mean crossing it.
-- Seeing the space beyond a doorway does not prove that
-  the camera entered that space.
-- Do not claim that crossing occurred unless the visual
-  evidence supports that conclusion.
-- Distinguish actual viewpoint movement through the doorway
-  from a stationary view or a change in camera direction.
-- Do not assume an object remains visible just because it
-  appeared earlier in the video.
-- Do not invent events between observations.
-- If the footage is ambiguous, explicitly acknowledge this.
+You MUST answer every section below in the exact order shown.
+Do not omit, merge, or replace any section with a conclusion.
 
-Answer both questions using the numbered structure above.
+QUESTION 1 — STAIRCASE AND EXIT SIGN
+
+1. APPROACH:
+[Your answer]
+
+2. FINAL STATE:
+[Your answer]
+
+3. CHANGE:
+- Staircase: [Your answer]
+- EXIT sign: [Your answer]
+
+4. EVIDENCE:
+[Your answer]
+
+QUESTION 2 — WALKING THROUGH THE DOORWAY
+
+1. ACTION:
+[Your answer]
+
+2. BEFORE CROSSING:
+[Your answer]
+
+3. DURING CROSSING:
+[Your answer]
+
+4. AFTER CROSSING:
+[Your answer]
+
+5. CONCLUSION:
+[Exactly one label]
+
+6. EVIDENCE:
+[Your answer]
+
+If a section cannot be answered from the video, write
+"INSUFFICIENT VISUAL EVIDENCE" and briefly explain why.
+
+Do not omit a section even when the answer is uncertain.
+Do not invent intermediate events or claim to see details
+that are not supported by the video.
 """
 
 
@@ -339,9 +371,14 @@ result = {
     "input_type": "native_video",
     "video_extraction_for_model": False,
     "quantization": "4-bit",
+    "max_new_tokens": MAX_NEW_TOKENS,
     "questions": {
-        "question_1": "Staircase and EXIT sign temporal visibility",
-        "question_2": "Doorway traversal recognition",
+        "question_1": (
+            "Staircase and EXIT sign temporal visibility"
+        ),
+        "question_2": (
+            "Doorway traversal recognition"
+        ),
     },
     "question": question.strip(),
     "model_answer": answer.strip(),
@@ -360,12 +397,13 @@ result = {
     "note": (
         "The MP4 was passed directly to Qwen2.5-VL through "
         "the native video input pathway. No OpenCV-extracted "
-        "JPEG frames were supplied to the model. The experiment "
-        "evaluates temporal visibility of the staircase and EXIT "
-        "sign, and whether the model can recognize and support "
-        "a claim that the camera passes through a doorway during "
-        "the final approximately 10 seconds. The model's conclusion "
-        "must be evaluated against the actual video."
+        "JPEG frames were supplied to the model. The test "
+        "evaluates temporal visibility of the staircase and "
+        "EXIT sign, and recognition of camera traversal through "
+        "a doorway during the final approximately 10 seconds. "
+        "Every requested answer section is explicitly specified "
+        "in the prompt. Prompt formatting does not guarantee "
+        "that the model will comply or that its answer is correct."
     ),
 }
 

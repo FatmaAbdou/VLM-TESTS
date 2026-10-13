@@ -1,0 +1,20 @@
+{
+    "recording_id": "recording_09",
+    "source": "Isaac Sim / ZED SVO",
+    "source_svo": "recording_09.svo2",
+    "camera_view": "LEFT",
+    "resolution": {
+        "width": 1920,
+        "height": 1200
+    },
+    "fps": 60.0,
+    "frames": 6128,
+    "duration_seconds": 102.716667,
+    "sample_fps": 1.0,
+    "sampled_images": 103,
+    "clip_duration_seconds": 20,
+    "video": {
+        "file": "full.mp4",
+        "codec": "H.264"
+    }
+}
