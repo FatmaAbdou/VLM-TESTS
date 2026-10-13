@@ -981,17 +981,14 @@
     },
     {
       "test_id": "OFFICE-048",
-      "category": "Counting",
+      "category": "Object Recognition",
       "input_media": [
-        "frame_075"
+        "frame_031"
       ],
-      "question": "How many couches are visible in the seating area?",
-      "ground_truth": 2,
+      "question": "What do you think this room is? and do you think we can find a refregirator in this room?",
+      "ground_truth": "office room with cubicles.",
       "accepted_answers": [
-        "2",
-        "two",
-        "two couches",
-        "there are two couches"
+        "office room with cubicles."
       ],
       "answer_type": "count",
       "notes": "Clear counting control using the two couches already established in OFFICE-031. Count only the visible couch instances.",
@@ -1001,7 +998,7 @@
       "test_id": "OFFICE-049",
       "category": "Counting",
       "input_media": [
-        "frame_075"
+        "frame_030"
       ],
       "question": "How many low tables are visible between the couches?",
       "ground_truth": 1,
